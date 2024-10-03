@@ -16,8 +16,8 @@ public class GoodsService {
         this.goodsRepository = goodsRepository;
     }
 
-    public Goods saveGoods(Goods goods) {
-        return goodsRepository.save(goods);
+    public void saveGoods(Goods goods) {
+        goodsRepository.save(goods);
     }
 
     public Iterable<Goods> findAll() {

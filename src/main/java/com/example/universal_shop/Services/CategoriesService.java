@@ -1,10 +1,12 @@
 package com.example.universal_shop.Services;
 
 import com.example.universal_shop.Models.Categories;
+import com.example.universal_shop.Models.DTOs.CategoriesDTO;
 import com.example.universal_shop.Repo.ICategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -16,8 +18,11 @@ public class CategoriesService {
         this.categoriesRepository = categoriesRepository;
     }
 
-    public Categories saveCategories(Categories categories) {
-        return categoriesRepository.save(categories);
+    public void saveCategories(CategoriesDTO categoriesDTO) throws IOException {
+        Categories categories = new Categories();
+        categories.setCategoryName(categoriesDTO.getCategoryName());
+        categories.setImage(categoriesDTO.getImage().getBytes());
+        categoriesRepository.save(categories);
     }
 
     public Iterable<Categories> findAll() {

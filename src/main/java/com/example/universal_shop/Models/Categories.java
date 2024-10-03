@@ -1,9 +1,6 @@
 package com.example.universal_shop.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +16,6 @@ public class Categories {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String categoryName;
+    @Lob
     private byte[] image;
 }

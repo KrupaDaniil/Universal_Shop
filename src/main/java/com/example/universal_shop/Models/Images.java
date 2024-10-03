@@ -15,6 +15,7 @@ public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Lob
     private byte[] image;
     private String imageName;
     private boolean isMainImage;

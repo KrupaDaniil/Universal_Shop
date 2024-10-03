@@ -1,6 +1,7 @@
 package com.example.universal_shop.Controllers;
 
 import com.example.universal_shop.Models.Categories;
+import com.example.universal_shop.Models.DTOs.CategoriesDTO;
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Models.Images;
 import com.example.universal_shop.Services.CategoriesService;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @Controller
@@ -25,9 +29,15 @@ public class AdminController {
         this.goodsService = goodsService;
         this.imagesService = imagesService;
     }
+
     @GetMapping("/admin-panel/")
     public String index() {
         return "admin-panel/index";
+    }
+
+    @GetMapping("/admin-panel/bad-request-product")
+    public String badRequestProduct() {
+        return "admin-panel/bad-request-product";
     }
 
     @GetMapping("/admin-panel/product-management")
@@ -50,4 +60,16 @@ public class AdminController {
 
         return "admin-panel/product-management";
     }
+
+    @PostMapping("/admin-panel/add-category")
+    public String addCategory(@ModelAttribute("categoriesDTO") CategoriesDTO categoriesDTO) {
+        try {
+            categoriesService.saveCategories(categoriesDTO);
+            return "redirect:/admin-panel/product-management";
+        } catch (IOException ex) {
+            return "redirect:/admin-panel/bad-request-product";
+        }
+    }
+
+    // add products and add images
 }

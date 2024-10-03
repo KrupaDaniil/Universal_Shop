@@ -9,3 +9,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.card-min-w {
+    min-width: 350px !important;
+}
+
+.container {
+    min-width: 680px !important;
+}
