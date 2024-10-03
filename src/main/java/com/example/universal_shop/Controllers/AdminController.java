@@ -25,8 +25,12 @@ public class AdminController {
         this.goodsService = goodsService;
         this.imagesService = imagesService;
     }
+    @GetMapping("/admin-panel/")
+    public String index() {
+        return "admin-panel/index";
+    }
 
-    @GetMapping("/product-management")
+    @GetMapping("/admin-panel/product-management")
     public String productManagement(Model model) {
         Iterable<Categories> ct = categoriesService.findAll();
         Iterable<Goods> gds = goodsService.findAll();
