@@ -3,15 +3,16 @@ package com.example.universal_shop.Services;
 import com.example.universal_shop.Models.DTOs.ImagesDTO;
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Models.Images;
+import com.example.universal_shop.Models.ModelsView.ImagesView;
 import com.example.universal_shop.Repo.IGoodsRepository;
 import com.example.universal_shop.Repo.IImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ImagesService {
@@ -42,6 +43,10 @@ public class ImagesService {
 
     public List<Images> findAll() {
         return imagesRepository.findAll().stream().toList();
+    }
+
+    public List<ImagesView> findAllView() {
+        return imagesRepository.findByIdAndImageNameAndMainImage();
     }
 
     public Images findById(long id) {

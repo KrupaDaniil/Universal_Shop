@@ -50,6 +50,7 @@
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col" class="text-center">Category</th>
+                                <th scope="col">Image</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
@@ -58,11 +59,27 @@
                                 <th scope="row" th:text="${stat.count}"></th>
                                 <td th:text="${category.getCategoryName()}" class="text-center"></td>
                                 <td>
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <a href="#" class="btn btn-sm btn-outline-primary px-3 my-2 me-2">Edit</a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger px-3 my-2">Delete</a>
-                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-success px-3" data-bs-toggle="modal"
+                                            data-bs-target="#imageModal">Show</button>
 
+                                    <div class="modal fade" id="imageModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img th:src="@{/admin-panel/category-image/{id}(id=${category.getId()})}"
+                                                         th:alt="${category.getImage()}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-primary px-3 me-2">Edit</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger px-3 ">Delete</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -137,6 +154,79 @@
 
             </div>
             <div class="tab-pane fade" id="nav-images" role="tabpanel" aria-labelledby="nav-images-tab" tabindex="0">
+                <div class="my-3 px-4">
+                    <form action="/admin-panel/add-image" method="post" enctype="multipart/form-data">
+                        <div class="row row-cols-2">
+                            <div class="col mb-3">
+                                <input th:type="file" th:name="image" class="form-control form-control-sm"
+                                       aria-label="Select an image" placeholder="Select an image">
+                            </div>
+                            <div class="col mb-3">
+                                <input th:type="text" th:name="imageName" class="form-control form-control-sm"
+                                       placeholder="Enter image name" aria-label="Enter image name">
+                            </div>
+                            <div class="col mb-3">
+                                <select th:name="goodsId" class="form-control form-control-sm" aria-label="Select product Id" required>
+                                    <option hidden="hidden" disabled selected>Select product</option>
+                                    <option th:each="product: ${goods}" th:value="${product.getId()}"
+                                            th:text="${product.getProductName()}"></option>
+                                </select>
+                            </div>
+                            <div class="col mb-3">
+                                <div class="form-check form-check-inline">
+                                    <label for="isMain" class="form-check-label">Main image</label>
+                                    <input th:type="checkbox" th:name="isMainImage" class="form-check-input" id="isMain">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <button type="submit" class="btn btn-sm btn-outline-success px-4">Add</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Image name</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">is Main</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="img, stat : ${images}">
+                    <tr>
+                        <th scope="row" th:text="${stat.count}"></th>
+
+                        <td class="w-25">
+                            <img th:src="@{/admin-panel/image/{id}(id=${img.getId()})}" th:alt="${img.getImageName()}" class="w-25"/>
+                        </td>
+
+                        <td th:text="${img.getImageName()}"></td>
+
+                        <td th:text="${img.getGoods().getProductName()}"></td>
+
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label" for="check">Main image</label>
+                                <input type="checkbox" th:checked="${img.isMainImage()}" id="check" class="form-check-input">
+                            </div>
+                        </td>
+
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-success px-3 my-2">Edit</a>
+                            <a href="#" class="btn btn-sm btn-outline-success px-3 my-2">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
             </div>
         </div>

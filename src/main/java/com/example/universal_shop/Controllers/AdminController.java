@@ -6,18 +6,20 @@ import com.example.universal_shop.Models.DTOs.GoodsDTO;
 import com.example.universal_shop.Models.DTOs.ImagesDTO;
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Models.Images;
+import com.example.universal_shop.Models.ModelsView.ImagesView;
 import com.example.universal_shop.Services.CategoriesService;
 import com.example.universal_shop.Services.GoodsService;
 import com.example.universal_shop.Services.ImagesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -48,7 +50,7 @@ public class AdminController {
 
         List<Categories> categories = categoriesService.findAll();
         List<Goods> goods = goodsService.findAll();
-        List<Images> images = imagesService.findAll();
+        List<ImagesView> images = imagesService.findAllView();
 
         model.addAttribute("categories", categories);
         model.addAttribute("goods", goods);
@@ -86,6 +88,27 @@ public class AdminController {
         } catch (IllegalArgumentException | IOException ex) {
             return "redirect:/admin-panel/bad-request-product";
         }
+    }
+
+    @GetMapping("/admin-panel/image/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable long id) {
+        byte[] image = imagesService.findById(id).getImage();
+
+        if (image == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().header("Content-Type", "image/png").body(image);
+    }
+
+    @GetMapping("/admin-panel/category-image/{id}")
+    public ResponseEntity<byte[]> getCategoryImage(@PathVariable long id) {
+        byte[] image = categoriesService.findById(id).getImage();
+
+        if (image == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().header("Content-Type", "image/png").body(image);
     }
 
 }
