@@ -2,6 +2,8 @@ package com.example.universal_shop.Controllers;
 
 import com.example.universal_shop.Models.Categories;
 import com.example.universal_shop.Models.DTOs.CategoriesDTO;
+import com.example.universal_shop.Models.DTOs.GoodsDTO;
+import com.example.universal_shop.Models.DTOs.ImagesDTO;
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Models.Images;
 import com.example.universal_shop.Services.CategoriesService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -42,17 +45,10 @@ public class AdminController {
 
     @GetMapping("/admin-panel/product-management")
     public String productManagement(Model model) {
-        Iterable<Categories> ct = categoriesService.findAll();
-        Iterable<Goods> gds = goodsService.findAll();
-        Iterable<Images> img = imagesService.findAll();
 
-        ArrayList<Categories> categories = new ArrayList<>();
-        ArrayList<Goods> goods = new ArrayList<>();
-        ArrayList<Images> images = new ArrayList<>();
-
-        ct.forEach(categories::add);
-        gds.forEach(goods::add);
-        img.forEach(images::add);
+        List<Categories> categories = categoriesService.findAll();
+        List<Goods> goods = goodsService.findAll();
+        List<Images> images = imagesService.findAll();
 
         model.addAttribute("categories", categories);
         model.addAttribute("goods", goods);
@@ -71,5 +67,25 @@ public class AdminController {
         }
     }
 
-    // add products and add images
+    @PostMapping("/admin-panel/add-product")
+    public String addProduct(@ModelAttribute("goodsDTO") GoodsDTO goodsDTO) {
+        try {
+            goodsService.saveGoods(goodsDTO);
+            return "redirect:/admin-panel/product-management";
+        }
+        catch (IllegalArgumentException ex) {
+            return "redirect:/admin-panel/bad-request-product";
+        }
+    }
+
+    @PostMapping("/admin-panel/add-image")
+    public String addImage(@ModelAttribute("imagesDTO") ImagesDTO imagesDTO) {
+        try {
+            imagesService.save(imagesDTO);
+            return "redirect:/admin-panel/product-management";
+        } catch (IllegalArgumentException | IOException ex) {
+            return "redirect:/admin-panel/bad-request-product";
+        }
+    }
+
 }

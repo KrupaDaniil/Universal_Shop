@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,12 +26,12 @@ public class CategoriesService {
         categoriesRepository.save(categories);
     }
 
-    public Iterable<Categories> findAll() {
-        return categoriesRepository.findAll();
+    public List<Categories> findAll() {
+        return categoriesRepository.findAll().stream().toList();
     }
 
-    public Optional<Categories> findById(long id) {
-        return categoriesRepository.findById(id);
+    public Categories findById(long id) {
+        return categoriesRepository.findById(id).orElse(null);
     }
 
     public void delete(long id) {
