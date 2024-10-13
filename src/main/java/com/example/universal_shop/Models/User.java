@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -18,19 +17,39 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "[users]")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
     private String surname;
+    @Column(unique = true)
     private String email;
     private String password;
     private String phone;
     private boolean enabled;
     private boolean isLocked;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public User(String name, String surname, String email, String password, String phone) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+    }
+
+    public User(String name, String surname, String email, String password, String phone, boolean enabled, boolean isLocked) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.enabled = enabled;
+        this.isLocked = isLocked;
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles;
 
     @Override

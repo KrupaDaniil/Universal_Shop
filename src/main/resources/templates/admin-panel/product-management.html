@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Product management</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/generalStyles.css">
 </head>
 <body>
@@ -60,9 +60,9 @@
                                 <td th:text="${category.getCategoryName()}" class="text-center"></td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-outline-success px-3" data-bs-toggle="modal"
-                                            data-bs-target="#imageModal">Show</button>
+                                            th:data-bs-target="'#imageModal' + ${category.getId()}">Show</button>
 
-                                    <div class="modal fade" id="imageModal" tabindex="-1">
+                                    <div class="modal fade" th:id="'imageModal' + ${category.getId()}" tabindex="-1">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -70,8 +70,10 @@
                                                             aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <img th:src="@{/admin-panel/category-image/{id}(id=${category.getId()})}"
-                                                         th:alt="${category.getImage()}"/>
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <img th:src="@{/admin-panel/category-image/{id}(id=${category.getId()})}"
+                                                             th:alt="${category.getImage()}" class="w-75"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -235,6 +237,6 @@
     <footer th:insert="~{general-pages/footer :: footer}"></footer>
 </div>
 
-<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

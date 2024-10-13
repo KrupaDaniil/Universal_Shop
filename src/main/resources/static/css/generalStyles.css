@@ -14,10 +14,22 @@
     min-width: 350px !important;
 }
 
+.card-login-w {
+    min-width: 15dvw !important;
+}
+
 .container {
     min-width: 680px !important;
 }
 
 .tx-resize {
     resize: none !important;
+}
+
+#userPhone:user-invalid {
+    border-color: red !important;
+}
+
+#userPhone:valid {
+    border-color: green !important;
 }

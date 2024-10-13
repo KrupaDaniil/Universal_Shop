@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <link rel="stylesheet" href="/css/generalStyles.css">
-    <link rel="stylesheet" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
@@ -15,20 +15,24 @@
 
     <div class="content-section">
         <div class="content-section-center">
-            <div class="card">
+            <div class="card card-login-w shadow">
                 <div class="card-header bg-body">
                     <div class="fw-semibold fs-5 text-center">Login</div>
                 </div>
+
+                <div class="card-body">
+                    <form th:method="POST" th:action="@{/login}">
+                        <input type="text" class="form-control form-control-sm mb-3" name="username"
+                               placeholder="Email" aria-label="Email">
+                        <input type="password" class="form-control form-control-sm mb-3" name="password"
+                               placeholder="Password" aria-label="Password">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <button type="submit" class="btn btn-sm btn-outline-success px-4">Go</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <form>
-                    <input type="text" class="form-control form-control-sm mb-3" placeholder="Email" aria-label="Email">
-                    <input type="password" class="form-control form-control-sm mb-3" placeholder="Password" aria-label="Password">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <button type="submit" class="btn btn-sm btn-outline-warning px-4">Go</button>
-                    </div>
-                </form>
-            </div>
+
         </div>
     </div>
 
@@ -36,6 +40,6 @@
 
 </div>
 
-<script src="webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

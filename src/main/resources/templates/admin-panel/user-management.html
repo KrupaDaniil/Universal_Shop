@@ -6,20 +6,180 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>User Management</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/ccs/generalStyles.css}">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/generalStyles.css">
 </head>
 <body>
 <div class="container">
-    <div th:insert="general-pages/menu :: menu"></div>
+    <header th:insert="~{general-pages/menu :: menu}"></header>
 
-    <div class="content-section">
+    <div class="content-section my-3">
+        <nav>
+            <div class="nav nav-tabs justify-content-center ms-3" id="nav-tab" role="tablist">
+                <button class="nav-link link-body-emphasis" id="nav-roles-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-roles"
+                        type="button" role="tab">Roles
+                </button>
+                <button class="nav-link link-body-emphasis" id="nav-users-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-users"
+                        type="button" role="tab">Users
+                </button>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade" id="nav-roles" role="tabpanel" aria-labelledby="nav-roles-tab" tabindex="0">
+                <div class="px-4 my-3">
+                    <form method="post" action="/admin-panel/add-role">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <input th:type="text" th:name="userRole" class="form-control form-control-sm me-3 w-50"
+                                   placeholder="Enter a role name" aria-label="Enter a role name">
+                            <button type="submit" class="btn btn-sm btn-outline-success px-4">Add</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="card w-50 px-3 card-min-w">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col" class="text-center">Role</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody th:each="rl, stat : ${roles}">
+                            <tr>
+                                <th scope="row" th:text="${stat.count}"></th>
+                                <td th:text="${rl.getUserRole()}" class="text-center"></td>
+
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-primary px-3 me-2">Edit</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger px-3 ">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab-tab" tabindex="0">
+                <div class="px-4 my-3">
+                    <form method="post" action="/admin-panel/add-user" th:object="${userAP_DTO}">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <input type="text" th:field="*{name}" class="form-control form-control-sm"
+                                       aria-label="Enter user name" placeholder="Enter user name">
+                            </div>
+                            <div class="col mb-3">
+                                <input type="text" th:field="*{surname}" class="form-control form-control-sm"
+                                       aria-label="Enter user surname" placeholder="Enter user surname">
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <input type="text" th:field="*{email}" class="form-control form-control-sm"
+                                       aria-label="Enter user email" placeholder="Enter user email">
+                            </div>
+
+                            <div class="col mb-3">
+                                <input type="password" th:field="*{password}" class="form-control form-control-sm"
+                                       aria-label="Enter user password" placeholder="Enter user password">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <input type="text" th:field="*{phone}" class="form-control form-control-sm"
+                                       aria-label="Enter user phone" placeholder="Enter user phone">
+                            </div>
+                            <div class="col mb-3">
+                                <div class="row">
+                                    <div class="col col-3">
+                                        <label class="form-label me-2" for="roleSelect">Select role</label>
+                                    </div>
+                                    <div class="col">
+                                        <select th:field="*{role_id}" id="roleSelect" class="form-select form-select-sm">
+                                            <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getUserRole()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col mb-3">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label" for="isEnabled">Is Enabled</label>
+                                    <input th:type="checkbox" th:field="*{enabled}" id="isEnabled"
+                                           class="form-check-input" checked>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label" for="isLocked">Is Locked</label>
+                                    <input th:type="checkbox" th:field="*{locked}" id="isLocked"
+                                           class="form-check-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <button type="submit" class="btn btn-sm btn-outline-success px-4">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-center">
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Enabled</th>
+                            <th scope="col">Locked</th>
+                            <th scope="col">Role</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="user, stat : ${users}">
+                        <tr>
+                            <th scope="row" th:text="${stat.count}"></th>
+                            <td th:text="${user.getName()}"></td>
+                            <td th:text="${user.getSurname()}"></td>
+                            <td th:text="${user.getEmail()}"></td>
+                            <td th:text="${user.getPhone()}"></td>
+                            <td>
+                                <div th:if="${user.isEnabled()}">yes</div>
+                                <div th:unless="${user.isEnabled()}">no</div>
+                            </td>
+                            <td>
+                                <div th:if="${user.isLocked()}">yes</div>
+                                <div th:unless="${user.isLocked()}">no</div>
+                            </td>
+                            <td>
+                                <span th:each="role : ${user.getUserRoles()}" th:text="${role.getRole().getUserRole()}"></span>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-primary px-3 me-2 ">Edit</a>
+                                <a href="#" class="btn btn-sm btn-outline-danger px-3">Delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
 
     </div>
 
-    <div th:insert="general-pages/footer :: footer"></div>
+    <footer th:insert="~{general-pages/footer :: footer}"></footer>
 </div>
 
-<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
