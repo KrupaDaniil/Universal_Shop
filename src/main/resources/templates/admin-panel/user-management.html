@@ -54,7 +54,6 @@
                                 <td th:text="${rl.getUserRole()}" class="text-center"></td>
 
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary px-3 me-2">Edit</a>
                                     <a href="#" class="btn btn-sm btn-outline-danger px-3 ">Delete</a>
                                 </td>
                             </tr>
@@ -110,7 +109,7 @@
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label" for="isEnabled">Is Enabled</label>
                                     <input th:type="checkbox" th:field="*{enabled}" id="isEnabled"
-                                           class="form-check-input" checked>
+                                           class="form-check-input">
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label" for="isLocked">Is Locked</label>
@@ -161,11 +160,11 @@
                                 <div th:unless="${user.isLocked()}">no</div>
                             </td>
                             <td>
-                                <span th:each="role : ${user.getUserRoles()}" th:text="${role.getRole().getUserRole()}"></span>
+                                <span th:each="role : ${user.getUserRoles()}" th:text="${role.getRole().getUserRole()}" class="me-1"></span>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-outline-primary px-3 me-2 ">Edit</a>
-                                <a href="#" class="btn btn-sm btn-outline-danger px-3">Delete</a>
+                                <a th:href="@{'/admin-panel/edit/user/'+${user.getId()}}" class="btn btn-sm btn-outline-primary px-3 my-1 me-2 ">Edit</a>
+                                <a href="#" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
                             </td>
                         </tr>
                         </tbody>

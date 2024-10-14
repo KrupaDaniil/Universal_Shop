@@ -14,25 +14,26 @@
     <header th:insert="~{general-pages/menu :: menu}"></header>
 
     <div class="content-section">
-        <div class="content-section-center">
-            <div class="card card-login-w shadow">
-                <div class="card-header bg-body">
-                    <div class="fw-semibold fs-5 text-center">Login</div>
-                </div>
+        <div class="img-container">
+            <div class="content-section-center">
+                <div class="card card-login-w shadow">
+                    <div class="card-header bg-body">
+                        <div class="fw-semibold fs-5 text-center">Login</div>
+                    </div>
 
-                <div class="card-body">
-                    <form th:method="POST" th:action="@{/login}">
-                        <input type="text" class="form-control form-control-sm mb-3" name="username"
-                               placeholder="Email" aria-label="Email">
-                        <input type="password" class="form-control form-control-sm mb-3" name="password"
-                               placeholder="Password" aria-label="Password">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <button type="submit" class="btn btn-sm btn-outline-success px-4">Go</button>
-                        </div>
-                    </form>
+                    <div class="card-body">
+                        <form th:method="POST" th:action="@{/login}">
+                            <input type="text" class="form-control form-control-sm mb-3" name="username"
+                                   placeholder="Email" aria-label="Email">
+                            <input type="password" class="form-control form-control-sm mb-3" name="password"
+                                   placeholder="Password" aria-label="Password">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary px-4">Go</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 

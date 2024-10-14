@@ -26,7 +26,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                 (rq) -> {
-                    rq.requestMatchers("admin-panel/**","/","/register", "/login", "/css/**", "/js/**",
+                    rq.requestMatchers("admin-panel/**","/","/register", "/login", "/css/**", "/js/**", "/images/**",
                                 "/errors/fail-registration").permitAll();
                     rq.anyRequest().authenticated();
                 })

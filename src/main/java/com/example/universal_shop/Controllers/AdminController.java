@@ -1,10 +1,7 @@
 package com.example.universal_shop.Controllers;
 
 import com.example.universal_shop.Models.*;
-import com.example.universal_shop.Models.DTOs.CategoriesDTO;
-import com.example.universal_shop.Models.DTOs.GoodsDTO;
-import com.example.universal_shop.Models.DTOs.ImagesDTO;
-import com.example.universal_shop.Models.DTOs.UserAP_DTO;
+import com.example.universal_shop.Models.DTOs.*;
 import com.example.universal_shop.Models.ModelsView.ImagesView;
 import com.example.universal_shop.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +123,57 @@ public class AdminController {
                 userRoleService.save(new UserRole(newUser, role));
             }
         }
+        return "redirect:/admin-panel/user-management";
+    }
+
+    @GetMapping("/admin-panel/edit/user/{id}")
+    public String editUser(@PathVariable(value = "id") long id, Model model) {
+        if (userService.existsById(id)){
+            User user = userService.findById(id);
+            if (user != null) {
+                try {
+                    UserEditDTO userEditDTO = new UserEditDTO(user.getName(), user.getSurname(), user.getEmail(), user.getPhone(),
+                            user.isEnabled(), user.isLocked(), user.getUserRoles(), roleService.findAll());
+
+                    model.addAttribute("userEditDTO", userEditDTO);
+
+                } catch (IllegalArgumentException ex) {
+                    return "redirect:/admin-panel/bad-request-user";
+                }
+            }
+        }
+        else {
+            return "redirect:/admin-panel/bad-request-user";
+        }
+
+        return "admin-panel/edit/user";
+    }
+
+    @PostMapping("/admin-panel/edit/user")
+    public String editUser(@ModelAttribute("userEditDTO") UserEditDTO user) {
+
+        User currentUser = userService.findByEmail(user.getEmail());
+
+        if (currentUser != null) {
+            currentUser.setName(user.getName());
+            currentUser.setSurname(user.getSurname());
+            currentUser.setEmail(user.getEmail());
+            currentUser.setPassword(user.getPassword());
+            currentUser.setPhone(user.getPhone());
+            currentUser.setEnabled(user.isEnabled());
+            currentUser.setLocked(user.isLocked());
+
+            userService.saveUser(currentUser);
+        }
+
+        Role role = roleService.findById(user.getRole_id());
+
+        if (role != null) {
+            if (!userRoleService.findByUser_IdAndRole_Id(currentUser.getId(), role.getId())) {
+                userRoleService.save(new UserRole(currentUser, role));
+            }
+        }
+
         return "redirect:/admin-panel/user-management";
     }
 

@@ -80,6 +80,26 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).orElse(null);
     }
 
+    public User findById(long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public long findByRoleId(long id) {
+        Set<UserRole> userRole = userRoleRepository.findByUser_Id(id);
+
+        long roleId = 0;
+
+        if (userRole == null) {
+            throw new IllegalArgumentException("User with id " + id + " not found");
+        }
+
+        for (UserRole ur : userRole) {
+            roleId = ur.getRole().getId();
+        }
+
+        return roleId;
+    }
+
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -87,6 +107,10 @@ public class UserService implements UserDetailsService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public boolean existsById(long id) {
+        return userRepository.existsById(id);
     }
 
     public void deleteUser(long id) {

@@ -3,6 +3,16 @@
     min-height: 85dvh;
 }
 
+.img-container {
+    background-image: url("../images/img_start.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 85dvh;
+    margin: 0;
+    border-radius: 0 0 15px 15px;
+}
+
 .content-section-center {
     position: absolute;
     top: 50%;
@@ -32,4 +42,31 @@
 
 #userPhone:valid {
     border-color: green !important;
+}
+
+.text-gr {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-box-decoration-break: clone;
+}
+
+.main-text-gr {
+    background-image: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+}
+
+.bg-main-menu {
+    background: #002244 !important;
+    border-radius: 0 0 15px 15px;
+}
+
+.dropdown-cs-menu {
+    background: #002244 !important;
+}
+.dropdown-item:hover {
+    background: rgba(0, 60, 121, 0.96) !important;
+    border-color: whitesmoke !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none !important;
 }
