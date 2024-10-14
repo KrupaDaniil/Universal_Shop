@@ -11,23 +11,35 @@
                 </svg>
             </button>
             <div class="collapse navbar-collapse ms-4" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
+                <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-light" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Categories
                         </a>
-                        <ul class="dropdown-menu dropdown-cs-menu">
-                            <li><a class="dropdown-item text-light" href="#">Action</a></li>
-                            <li><a class="dropdown-item text-light" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider bg-light"></li>
-                            <li><a class="dropdown-item text-light" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                        <div class="dropdown-menu dropdown-cs-menu">
+                            <div><a class="dropdown-item text-light" href="#">Action</a></div>
+                            <div><a class="dropdown-item text-light" href="#">Another action</a></div>
+                            <div th:if="${user}">
+                                <div th:each="role : ${user.getUserRoles()}" th:if="${role.getRole().getUserRole().equalsIgnoreCase('admin')}">
+                                    <div><hr class="dropdown-divider bg-light"></div>
+                                    <div><a class="dropdown-item text-light" th:href="@{/admin-panel}">Admin panel</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="d-flex align-items-center justify-content-end">
-                    <a th:href="@{/login}" class="btn btn-sm btn-outline-light me-2">Login</a>
-                    <a th:href="@{/register}" class="btn btn-sm btn-outline-light">Register</a>
+                <div th:if="${user}">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <span class="fw-semibold me-2 text-light" th:text="${user.getName()} +' '+ ${user.getSurname()}"></span>
+                        <a th:href="@{/logout}" class="btn btn-sm btn-outline-light">Logout</a>
+                    </div>
+                </div>
+                <div th:unless="${user}">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <a th:href="@{/login}" class="btn btn-sm btn-outline-light me-2">Login</a>
+                        <a th:href="@{/register}" class="btn btn-sm btn-outline-light">Register</a>
+                    </div>
                 </div>
             </div>
 

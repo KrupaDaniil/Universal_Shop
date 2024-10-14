@@ -6,6 +6,7 @@ import com.example.universal_shop.Models.ModelsView.ImagesView;
 import com.example.universal_shop.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,37 +38,51 @@ public class AdminController {
         this.userRoleService = userRoleService;
     }
 
+    @GetMapping("/admin-panel")
+    public String preIndex(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
+        return "admin-panel/index";
+    }
+
+
     @GetMapping("/admin-panel/")
-    public String index() {
+    public String index(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "admin-panel/index";
     }
 
     @GetMapping("/admin-panel/bad-request-product")
-    public String badRequestProduct() {
+    public String badRequestProduct(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "admin-panel/bad-request-product";
     }
 
     @GetMapping("/admin-panel/product-management")
-    public String productManagement(Model model) {
+    public String productManagement(@AuthenticationPrincipal User user, Model model) {
 
         List<Categories> categories = categoriesService.findAll();
         List<Goods> goods = goodsService.findAll();
         List<ImagesView> images = imagesService.findAllView();
 
+
         model.addAttribute("categories", categories);
         model.addAttribute("goods", goods);
         model.addAttribute("images", images);
+
+        model.addAttribute("user", user);
 
         return "admin-panel/product-management";
     }
 
     @GetMapping("/admin-panel/user-management")
-    public String userManagement(Model model) {
+    public String userManagement(@AuthenticationPrincipal User user, Model model) {
         List<User> users = userService.findAll();
         List<Role> roles = roleService.findAll();
         model.addAttribute("users", users);
         model.addAttribute("roles", roles);
         model.addAttribute("userAP_DTO", new UserAP_DTO());
+
+        model.addAttribute("user", user);
 
        return "admin-panel/user-management";
     }
@@ -83,7 +98,9 @@ public class AdminController {
     }
 
     @GetMapping("/admin-panel/edit/category/{id}")
-    public String editCategory(@PathVariable("id") long id, Model model) {
+    public String editCategory(@PathVariable("id") long id, @AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
+
         if (categoriesService.existsById(id)) {
             Categories categories = categoriesService.findById(id);
             CategoriesDTO categoriesDTO = new CategoriesDTO();
@@ -161,7 +178,9 @@ public class AdminController {
     }
 
     @GetMapping("/admin-panel/edit/user/{id}")
-    public String editUser(@PathVariable(value = "id") long id, Model model) {
+    public String editUser(@PathVariable(value = "id") long id, @AuthenticationPrincipal User userAt, Model model) {
+        model.addAttribute("user", userAt);
+
         if (userService.existsById(id)){
             User user = userService.findById(id);
             if (user != null) {
@@ -189,24 +208,36 @@ public class AdminController {
         User currentUser = userService.findByEmail(user.getEmail());
 
         if (currentUser != null) {
-            currentUser.setName(user.getName());
-            currentUser.setSurname(user.getSurname());
-            currentUser.setEmail(user.getEmail());
-            currentUser.setPassword(user.getPassword());
-            currentUser.setPhone(user.getPhone());
+            if (user.getName() != null) {
+                currentUser.setName(user.getName());
+            }
+            if (user.getSurname() != null) {
+                currentUser.setSurname(user.getSurname());
+            }
+            if (user.getEmail() != null) {
+                currentUser.setEmail(user.getEmail());
+            }
+            if (user.getPassword() != null) {
+                currentUser.setPassword(user.getPassword());
+            }
+            if (user.getPhone() != null) {
+                currentUser.setPhone(user.getPhone());
+            }
             currentUser.setEnabled(user.isEnabled());
             currentUser.setLocked(user.isLocked());
 
             userService.saveUser(currentUser);
-        }
 
-        Role role = roleService.findById(user.getRole_id());
+            Role role = roleService.findById(user.getRole_id());
 
-        if (role != null) {
-            if (!userRoleService.findByUser_IdAndRole_Id(currentUser.getId(), role.getId())) {
-                userRoleService.save(new UserRole(currentUser, role));
+            if (role != null) {
+                if (!userRoleService.findByUser_IdAndRole_Id(currentUser.getId(), role.getId())) {
+                    userRoleService.save(new UserRole(currentUser, role));
+                }
             }
         }
+
+
 
         return "redirect:/admin-panel/user-management";
     }
@@ -214,6 +245,7 @@ public class AdminController {
     @GetMapping("/admin-panel/delete-user/{id}")
     public String deleteUser(@PathVariable(value = "id") long id) {
         if (userService.existsById(id)) {
+
             userService.deleteUser(id);
         }
 

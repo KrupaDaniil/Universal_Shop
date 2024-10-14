@@ -49,7 +49,7 @@ public class User implements UserDetails {
         this.isLocked = isLocked;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<UserRole> userRoles;
 
     @Override

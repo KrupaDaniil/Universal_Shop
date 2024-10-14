@@ -27,12 +27,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                 (rq) -> {
                     rq.requestMatchers("admin-panel/**","/","/register", "/login", "/css/**", "/js/**", "/images/**",
-                                "/errors/fail-registration").permitAll();
+                                "/errors/fail-registration", "/general-pages/**").permitAll();
                     rq.anyRequest().authenticated();
                 })
                 .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll()
                         .failureUrl("/register").permitAll()
-                );
+                )
+                .logout(logout -> logout.logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID"));
 
         return http.build();
     }

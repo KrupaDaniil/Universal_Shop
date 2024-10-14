@@ -20,14 +20,4 @@ public class UserAP_DTO {
     private boolean enabled;
     private boolean locked;
     private long role_id;
-
-    public UserAP_DTO(String name, String surname, String email, String phone, boolean enabled, boolean locked) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phone = phone;
-        this.enabled = enabled;
-        this.locked = locked;
-    }
-
 }

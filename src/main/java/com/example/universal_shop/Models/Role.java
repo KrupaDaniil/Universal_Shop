@@ -1,14 +1,12 @@
 package com.example.universal_shop.Models;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+
 import java.util.Set;
 
 @Setter
@@ -24,6 +22,6 @@ public class Role {
     @Column(unique = true)
     private String userRole;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<UserRole> userRoles;
 }

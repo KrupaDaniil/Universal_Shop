@@ -43,8 +43,10 @@ public class UserRoleService {
         return userRoleRepository.existsById(id);
     }
 
+
     @Transactional
     public void deleteById(long id) {
         userRoleRepository.deleteById(id);
+        userRoleRepository.flush();
     }
 }

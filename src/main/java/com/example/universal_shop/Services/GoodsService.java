@@ -3,14 +3,12 @@ package com.example.universal_shop.Services;
 import com.example.universal_shop.Models.Categories;
 import com.example.universal_shop.Models.DTOs.GoodsDTO;
 import com.example.universal_shop.Models.Goods;
-import com.example.universal_shop.Models.Images;
 import com.example.universal_shop.Repo.ICategoriesRepository;
 import com.example.universal_shop.Repo.IGoodsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GoodsService {

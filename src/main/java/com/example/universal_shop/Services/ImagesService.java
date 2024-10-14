@@ -7,10 +7,8 @@ import com.example.universal_shop.Models.ModelsView.ImagesView;
 import com.example.universal_shop.Repo.IGoodsRepository;
 import com.example.universal_shop.Repo.IImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.util.List;
 

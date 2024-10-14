@@ -11,20 +11,23 @@
 </head>
 <body>
 <div class="container">
-    <div th:insert="general-pages/menu :: menu"></div>
+    <div th:insert="~{general-pages/menu :: menu}"></div>
 
     <div class="content-section">
-        <div class="content-section-center">
-            <a th:href="@{product-management}" class="btn btn-outline-warning me-2">
-                Product Management
-            </a>
-            <a th:href="@{user-management}" class="btn btn-outline-warning">
-                User Management
-            </a>
+        <div class="img-container">
+            <div class="content-section-center">
+                <a th:href="@{/admin-panel/product-management}" class="btn btn-outline-secondary me-2">
+                    Product Management
+                </a>
+                <a th:href="@{/admin-panel/user-management}" class="btn btn-outline-secondary">
+                    User Management
+                </a>
+            </div>
         </div>
+
     </div>
 
-    <div th:insert="general-pages/footer :: footer"></div>
+    <div th:insert="~{general-pages/footer :: footer}"></div>
 </div>
 
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
