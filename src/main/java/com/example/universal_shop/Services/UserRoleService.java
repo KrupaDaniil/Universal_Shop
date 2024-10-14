@@ -4,6 +4,7 @@ import com.example.universal_shop.Models.UserRole;
 import com.example.universal_shop.Repo.IUserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -38,7 +39,12 @@ public class UserRoleService {
         return userRoleRepository.existsByUser_IdAndRole_Id(userId, roleId);
     }
 
-    public void delete(long id) {
+    public boolean existsById(long id) {
+        return userRoleRepository.existsById(id);
+    }
+
+    @Transactional
+    public void deleteById(long id) {
         userRoleRepository.deleteById(id);
     }
 }

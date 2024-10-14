@@ -82,6 +82,40 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/admin-panel/edit/category/{id}")
+    public String editCategory(@PathVariable("id") long id, Model model) {
+        if (categoriesService.existsById(id)) {
+            Categories categories = categoriesService.findById(id);
+            CategoriesDTO categoriesDTO = new CategoriesDTO();
+            categoriesDTO.setCategoryName(categories.getCategoryName());
+            model.addAttribute("categories", categoriesDTO);
+        }
+
+        return "admin-panel/edit/category";
+    }
+
+    @PostMapping("/admin-panel/edit/category/{id}")
+    public String editCategory(@PathVariable("id") long id, @ModelAttribute("categoryDTO") CategoriesDTO categoryDTO) {
+        if (categoriesService.existsById(id)) {
+            Categories ct = categoriesService.findById(id);
+            try {
+                ct.setCategoryName(categoryDTO.getCategoryName());
+                ct.setImage(categoryDTO.getImage().getBytes());
+                categoriesService.editCategories(ct);
+
+                return "redirect:/admin-panel/product-management";
+
+            } catch (IOException ex) {
+                return "redirect:/admin-panel/bad-request-product";
+            }
+        }
+        else {
+            return "redirect:/admin-panel/bad-request-product";
+        }
+    }
+
+
+
     @PostMapping("/admin-panel/add-product")
     public String addProduct(@ModelAttribute("goodsDTO") GoodsDTO goodsDTO) {
         try {
@@ -177,6 +211,34 @@ public class AdminController {
         return "redirect:/admin-panel/user-management";
     }
 
+    @GetMapping("/admin-panel/delete-user/{id}")
+    public String deleteUser(@PathVariable(value = "id") long id) {
+        if (userService.existsById(id)) {
+            userService.deleteUser(id);
+        }
+
+        return "redirect:/admin-panel/user-management";
+    }
+
+    @GetMapping("/admin-panel/delete-user-role/{id}")
+    public String deleteUserRole(@PathVariable(value = "id") long id) {
+        if (userRoleService.existsById(id)) {
+            userRoleService.deleteById(id);
+        }
+
+        return "redirect:/admin-panel/user-management";
+    }
+
+    @GetMapping("/admin-panel/delete-role/{id}")
+    public String deleteRole(@PathVariable(value = "id") long id) {
+        if (roleService.existsById(id)) {
+            roleService.delete(id);
+        }
+
+        return "redirect:/admin-panel/user-management";
+    }
+
+
     @GetMapping("/admin-panel/image/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable long id) {
         byte[] image = imagesService.findById(id).getImage();
@@ -197,7 +259,6 @@ public class AdminController {
         }
         return ResponseEntity.ok().header("Content-Type", "image/png").body(image);
     }
-
 
 
 }

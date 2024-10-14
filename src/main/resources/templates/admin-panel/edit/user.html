@@ -95,7 +95,7 @@
                         <th scope="row" th:text="${stat.count}"></th>
                         <td th:text="${role.getRole().getUserRole()}"></td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
+                            <a th:href="@{'/admin-panel/delete-user-role/'+${role.getId()}}" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
                         </td>
                     </tr>
                     </tbody>

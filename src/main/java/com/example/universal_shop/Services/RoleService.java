@@ -40,4 +40,8 @@ public class RoleService {
         return roleRepository.existsByUserRole(role);
     }
 
+    public boolean existsById(long id) {
+        return roleRepository.existsById(id);
+    }
+
 }

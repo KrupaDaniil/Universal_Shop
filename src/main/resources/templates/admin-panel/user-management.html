@@ -54,7 +54,7 @@
                                 <td th:text="${rl.getUserRole()}" class="text-center"></td>
 
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-danger px-3 ">Delete</a>
+                                    <a th:href="@{'/admin-panel/delete-role/'+${rl.getId()}}" class="btn btn-sm btn-outline-danger px-3 ">Delete</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -164,7 +164,7 @@
                             </td>
                             <td>
                                 <a th:href="@{'/admin-panel/edit/user/'+${user.getId()}}" class="btn btn-sm btn-outline-primary px-3 my-1 me-2 ">Edit</a>
-                                <a href="#" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
+                                <a th:href="@{'/admin-panel/delete-user/'+${user.getId()}}" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
                             </td>
                         </tr>
                         </tbody>

@@ -9,4 +9,5 @@ public interface IUserRoleRepository extends JpaRepository<UserRole, Long> {
     Set<UserRole> findByUser_Id(long id);
     Set<UserRole> findByRole_Id(long id);
     boolean existsByUser_IdAndRole_Id(long userId, long roleId);
+    boolean existsById(long id);
 }

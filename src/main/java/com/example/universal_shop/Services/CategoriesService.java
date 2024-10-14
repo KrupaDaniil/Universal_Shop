@@ -26,6 +26,10 @@ public class CategoriesService {
         categoriesRepository.save(categories);
     }
 
+    public void editCategories(Categories categories) {
+        categoriesRepository.save(categories);
+    }
+
     public List<Categories> findAll() {
         return categoriesRepository.findAll().stream().toList();
     }
