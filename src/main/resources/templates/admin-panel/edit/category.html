@@ -14,22 +14,32 @@
     <header th:insert="~{general-pages/menu :: menu}"></header>
     <div class="content-section">
         <div class="d-flex align-items-center justify-content-center">
-            <form method="post" th:action="@{/admin-panel/edit/category}" th:object="${categories}" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="col">
-                        <input type="text" th:field="*{categoryName}" class="form-control form-control-sm mb-3"
-                               placeholder="Enter category name" aria-label="Enter category name">
-                    </div>
-                    <div class="col">
-                        <input type="file" th:field="*{image}" class="form-control form-control-sm mb-3"
-                               placeholder="Category image" aria-label="Category image">
-                    </div>
-                    <div class="col">
-                        <button type="submit" class="btn btn-sm btn-outline-success px-4 me-2">Save</button>
-                        <a th:href="@{/admin-panel/product-management}" class="btn btn-sm btn-outline-warning px-4">Back</a>
-                    </div>
+            <div class="card my-3 px-3">
+                <div class="card-header bg-body">
+                    <div class="fw-semibold text-center fs-5">Edit category</div>
                 </div>
-            </form>
+                <div class="card-body">
+                    <form method="post" th:action="@{/admin-panel/edit/category}" th:object="${categories}" enctype="multipart/form-data">
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" th:field="*{categoryName}" class="form-control form-control-sm mb-3"
+                                       placeholder="Enter category name" aria-label="Enter category name">
+                            </div>
+                            <div class="col">
+                                <input type="file" th:field="*{image}" class="form-control form-control-sm mb-3"
+                                       placeholder="Category image" aria-label="Category image">
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-sm btn-outline-success px-4 me-2">Save</button>
+                                <a th:href="@{/admin-panel/product-management}" class="btn btn-sm btn-outline-warning px-4">Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
     </div>

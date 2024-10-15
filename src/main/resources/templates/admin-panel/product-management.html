@@ -80,7 +80,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary px-3 me-2">Edit</a>
+                                    <a th:href="@{'/admin-panel/edit/category/' + ${category.getId()}}" class="btn btn-sm btn-outline-secondary px-3 me-2">Edit</a>
                                     <a href="#" class="btn btn-sm btn-outline-danger px-3 ">Delete</a>
                                 </td>
                             </tr>
@@ -147,8 +147,8 @@
                         <td th:text="${product.getBrand()}"></td>
                         <td th:text="${product.getPrice()}"></td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-outline-success px-3 my-2">Edit</a>
-                            <a href="#" class="btn btn-sm btn-outline-success px-3 my-2">Delete</a>
+                            <a th:href="@{'/admin-panel/edit/product/' + ${product.getId()}}" class="btn btn-sm btn-outline-secondary px-3 my-1">Edit</a>
+                            <a href="#" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
                         </td>
                     </tr>
                     </tbody>
@@ -223,8 +223,8 @@
                         </td>
 
                         <td>
-                            <a href="#" class="btn btn-sm btn-outline-success px-3 my-1">Edit</a>
-                            <a href="#" class="btn btn-sm btn-outline-success px-3 my-1">Delete</a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary px-3 my-1">Edit</a>
+                            <a href="#" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
                         </td>
                     </tr>
                     </tbody>

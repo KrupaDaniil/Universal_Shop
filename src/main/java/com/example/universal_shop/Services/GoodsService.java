@@ -6,6 +6,7 @@ import com.example.universal_shop.Models.DTOs.ProductEditDTO;
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Repo.ICategoriesRepository;
 import com.example.universal_shop.Repo.IGoodsRepository;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,20 +23,37 @@ public class GoodsService {
         this.categoriesRepository = categoriesRepository;
     }
 
-    public void saveGoods(GoodsDTO goodsDto) {
+    public void saveGoods(GoodsDTO goodsDto, @Nullable Long id) {
         Categories ct = categoriesRepository.findById(goodsDto.getCategoryId()).orElse(null);
-
+        Goods goods;
         if (ct == null) {
             throw new IllegalArgumentException("Invalid category id");
         }
 
-        Goods goods = new Goods();
-        goods.setProductName(goodsDto.getProductName());
-        goods.setPrice(goodsDto.getPrice());
-        goods.setBrand(goodsDto.getBrand());
-        goods.setDescription(goodsDto.getDescription());
-        goods.setCategories(ct);
-        goodsRepository.save(goods);
+        if (id == null) {
+           goods = new Goods();
+        }
+        else {
+            goods = goodsRepository.findById(id).orElse(null);
+        }
+
+        if (goods != null) {
+            if (goodsDto.getProductName() != null) {
+                goods.setProductName(goodsDto.getProductName());
+            }
+            goods.setPrice(goodsDto.getPrice());
+            if (goodsDto.getBrand() != null) {
+                goods.setBrand(goodsDto.getBrand());
+            }
+            if (goodsDto.getDescription() != null) {
+                goods.setDescription(goodsDto.getDescription());
+            }
+            goods.setCategories(ct);
+            goodsRepository.save(goods);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid goods id");
+        }
     }
 
     public List<Goods> findAll() {

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoriesDTO {
+    private long id;
     private String categoryName;
     private MultipartFile image;
 }

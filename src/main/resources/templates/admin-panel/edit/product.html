@@ -1,13 +1,77 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Edit product</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/generalStyles.css">
 </head>
 <body>
+<div class="container">
+    <header th:insert="~{general-pages/menu :: menu}"></header>
+    <div class="content-section">
+        <div class="card px-3 my-3">
+            <div class="card-header fw-semibold fs-5 bg-body">Editing product</div>
+            <div class="card-body">
+                <form method="post" th:action="@{/admin-panel/edit/product}" th:object="${productDTO}">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="text" th:field="*{productName}" class="form-control form-control-sm"
+                                   placeholder="Enter product name" aria-label="Enter product name">
+                        </div>
+                        <div class="col">
+                            <input type="number" th:field="*{price}" class="form-control form-control-sm"
+                                   placeholder="Enter product price" aria-label="Enter product price">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="text" th:field="*{brand}" class="form-control form-control-sm"
+                                   placeholder="Enter product brand" aria-label="Enter product brand">
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label class="fw-semibold col-sm-3 col-form-label col-form-label-sm">Select a category</label>
+                                <div class="col-sm">
+                                    <select th:field="*{categoryId}" id="selectCategory" class="form-select form-select-sm"
+                                            aria-label="Select a category">
+                                        <option th:each="ct : ${productDTO.getCategories()}"
+                                                th:text="${ct.getCategoryName()}" th:if="${ct.getId() == productDTO.getCategoryId()}"
+                                                th:value="${ct.getId()}" selected></option>
+                                        <option th:each="ct : ${productDTO.getCategories()}"
+                                                th:text="${ct.getCategoryName()}" th:unless="${ct.getId() == productDTO.getCategoryId()}"
+                                                th:value="${ct.getId()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                    <textarea class="form-control form-control-sm tx-resize" th:field="*{description}"
+                              aria-label="Enter description" placeholder="Enter description"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a th:href="@{/admin-panel/product-management}" class="btn btn-sm btn-outline-secondary me-2 px-4">Back</a>
+                        <button type="submit" class="btn btn-sm btn-outline-success px-4">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <footer th:insert="~{general-pages/footer :: footer}"></footer>
+</div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

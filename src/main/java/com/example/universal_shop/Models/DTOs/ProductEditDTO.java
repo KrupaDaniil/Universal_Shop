@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductEditDTO {
+    private long id;
     private String productName;
     private double price;
     private String brand;

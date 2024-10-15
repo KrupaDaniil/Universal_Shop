@@ -98,27 +98,34 @@ public class AdminController {
     }
 
     @GetMapping("/admin-panel/edit/category/{id}")
-    public String editCategory(@PathVariable("id") long id, @AuthenticationPrincipal User user, Model model) {
+    public String editCategory(@PathVariable("id") Long id, @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
-        model.addAttribute("categoryId", id);
 
         if (categoriesService.existsById(id)) {
             Categories categories = categoriesService.findById(id);
-            CategoriesDTO categoriesDTO = new CategoriesDTO();
-            categoriesDTO.setCategoryName(categories.getCategoryName());
-            model.addAttribute("categories", categoriesDTO);
+            if (categories != null) {
+                CategoriesDTO categoriesDTO = new CategoriesDTO();
+                categoriesDTO.setId(categories.getId());
+                categoriesDTO.setCategoryName(categories.getCategoryName());
+                model.addAttribute("categories", categoriesDTO);
+            }
         }
 
         return "admin-panel/edit/category";
     }
 
-    @PostMapping("/admin-panel/edit/category/")
-    public String editCategory(@ModelAttribute("categoryId") long id, @ModelAttribute("categoryDTO") CategoriesDTO categoryDTO) {
-        if (categoriesService.existsById(id)) {
-            Categories ct = categoriesService.findById(id);
+    @PostMapping("/admin-panel/edit/category")
+    public String editCategory(@ModelAttribute("categoryDTO") CategoriesDTO categoryDTO) {
+        if (categoriesService.existsById(categoryDTO.getId())) {
+            Categories ct = categoriesService.findById(categoryDTO.getId());
             try {
-                ct.setCategoryName(categoryDTO.getCategoryName());
-                ct.setImage(categoryDTO.getImage().getBytes());
+                if (categoryDTO.getCategoryName() != null) {
+                    ct.setCategoryName(categoryDTO.getCategoryName());
+                }
+                if (categoryDTO.getImage() != null) {
+                    ct.setImage(categoryDTO.getImage().getBytes());
+                }
+
                 categoriesService.editCategories(ct);
 
                 return "redirect:/admin-panel/product-management";
@@ -137,7 +144,7 @@ public class AdminController {
     @PostMapping("/admin-panel/add-product")
     public String addProduct(@ModelAttribute("goodsDTO") GoodsDTO goodsDTO) {
         try {
-            goodsService.saveGoods(goodsDTO);
+            goodsService.saveGoods(goodsDTO, null);
             return "redirect:/admin-panel/product-management";
         }
         catch (IllegalArgumentException ex) {
@@ -148,13 +155,17 @@ public class AdminController {
     @GetMapping("/admin-panel/edit/product/{id}")
     public String editProduct(@PathVariable("id") long id, @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
-        model.addAttribute("productId", id);
         if (categoriesService.existsById(id)) {
             Goods product = goodsService.findById(id);
-            ProductEditDTO productEditDTO= new ProductEditDTO(product.getProductName(), product.getPrice(), product.getBrand(),
-                    product.getDescription(), product.getCategories().getId(), categoriesService.findAllCategoriesProductDTO());
-            model.addAttribute("productDTO", productEditDTO);
-            return "admin-panel/edit/product";
+            if (product != null) {
+                ProductEditDTO productEditDTO= new ProductEditDTO(product.getId(), product.getProductName(), product.getPrice(), product.getBrand(),
+                        product.getDescription(), product.getCategories().getId(), categoriesService.findAllCategoriesProductDTO());
+                model.addAttribute("productDTO", productEditDTO);
+                return "admin-panel/edit/product";
+            }
+            else {
+                return "redirect:/admin-panel/bad-request-product";
+            }
         }
         else {
             return "redirect:/admin-panel/bad-request-product";
@@ -162,12 +173,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin-panel/edit/product")
-    public String editProduct(@ModelAttribute("productId") long id, @ModelAttribute("productDTO") ProductEditDTO productDTO) {
-        if (goodsService.existsById(id)) {
+    public String editProduct(@ModelAttribute("productDTO") ProductEditDTO productDTO) {
+        if (goodsService.existsById(productDTO.getId())) {
             GoodsDTO goodsDTO = new GoodsDTO(productDTO.getProductName(), productDTO.getPrice(), productDTO.getBrand(),
                     productDTO.getDescription(), productDTO.getCategoryId());
             try {
-                goodsService.saveGoods(goodsDTO);
+                goodsService.saveGoods(goodsDTO, productDTO.getId());
                 return "redirect:/admin-panel/product-management";
             } catch (IllegalArgumentException ex) {
                 return "redirect:/admin-panel/bad-request-product";
