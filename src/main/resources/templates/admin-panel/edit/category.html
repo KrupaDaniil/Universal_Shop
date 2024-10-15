@@ -1,13 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Edit category</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/generalStyles.css">
 </head>
 <body>
+<div class="container">
+    <header th:insert="~{general-pages/menu :: menu}"></header>
+    <div class="content-section">
+        <div class="d-flex align-items-center justify-content-center">
+            <form method="post" th:action="@{/admin-panel/edit/category}" th:object="${categories}" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" th:field="*{categoryName}" class="form-control form-control-sm mb-3"
+                               placeholder="Enter category name" aria-label="Enter category name">
+                    </div>
+                    <div class="col">
+                        <input type="file" th:field="*{image}" class="form-control form-control-sm mb-3"
+                               placeholder="Category image" aria-label="Category image">
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-sm btn-outline-success px-4 me-2">Save</button>
+                        <a th:href="@{/admin-panel/product-management}" class="btn btn-sm btn-outline-warning px-4">Back</a>
+                    </div>
+                </div>
+            </form>
+        </div>
 
+    </div>
+    <footer th:insert="~{general-pages/footer :: footer}"></footer>
+</div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

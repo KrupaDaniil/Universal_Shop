@@ -1,5 +1,6 @@
 package com.example.universal_shop.Services;
 
+import com.example.universal_shop.Models.DTOs.ImageEditDTO;
 import com.example.universal_shop.Models.DTOs.ImagesDTO;
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Models.Images;
@@ -57,5 +58,9 @@ public class ImagesService {
 
     public boolean existsById(long id) {
         return imagesRepository.existsById(id);
+    }
+
+    public int updateByImage(ImageEditDTO imageEditDTO) {
+        return imagesRepository.updateByImageNameAndMainImage(imageEditDTO);
     }
 }

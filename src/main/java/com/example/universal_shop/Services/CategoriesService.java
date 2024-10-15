@@ -2,6 +2,7 @@ package com.example.universal_shop.Services;
 
 import com.example.universal_shop.Models.Categories;
 import com.example.universal_shop.Models.DTOs.CategoriesDTO;
+import com.example.universal_shop.Models.DTOs.CategoriesProductDTO;
 import com.example.universal_shop.Repo.ICategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,9 @@ public class CategoriesService {
 
     public boolean existsById(long id) {
         return categoriesRepository.existsById(id);
+    }
+
+    public List<CategoriesProductDTO> findAllCategoriesProductDTO() {
+        return categoriesRepository.findCategoriesByIdAndCategoryName();
     }
 }
