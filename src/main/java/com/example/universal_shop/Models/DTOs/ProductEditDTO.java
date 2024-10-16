@@ -1,6 +1,7 @@
 package com.example.universal_shop.Models.DTOs;
 
 import com.example.universal_shop.Models.Categories;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,6 @@ public class ProductEditDTO {
     private double price;
     private String brand;
     private String description;
-    private long categoryId;
+    private Long categoryId;
     private List<CategoriesProductDTO> categories;
 }

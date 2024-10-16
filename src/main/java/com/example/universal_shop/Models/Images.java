@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -18,10 +20,12 @@ public class Images {
     @Lob
     private byte[] image;
     private String imageName;
-    private boolean isMainImage;
+    @Column(name = "is_main_image", nullable = false)
+    private Boolean isMainImage = false;
 
     @ManyToOne
-    @JoinColumn(name = "goods_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "goods_id", nullable = true)
     private Goods goods;
 
 }

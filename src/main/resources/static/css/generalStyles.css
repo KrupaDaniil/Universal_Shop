@@ -4,13 +4,13 @@
 }
 
 .img-container {
-    background-image: url("../images/img_start.jpg");
+    background-image: url("../images/img_start_v4.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 85dvh;
     margin: 0;
-    border-radius: 0 0 15px 15px;
+    padding: 0;
 }
 
 .content-section-center {
@@ -52,6 +52,7 @@
 
 .main-text-gr {
     background-image: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+    filter: drop-shadow(1px 1px 3px rgba(75, 108, 183, 0.7));
 }
 
 .bg-main-menu {

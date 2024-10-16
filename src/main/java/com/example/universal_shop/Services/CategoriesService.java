@@ -13,10 +13,12 @@ import java.util.List;
 @Service
 public class CategoriesService {
     private final ICategoriesRepository categoriesRepository;
+    private final GoodsService goodsService;
 
     @Autowired
-    public CategoriesService(ICategoriesRepository categoriesRepository) {
+    public CategoriesService(ICategoriesRepository categoriesRepository, GoodsService goodsService) {
         this.categoriesRepository = categoriesRepository;
+        this.goodsService = goodsService;
     }
 
     public void saveCategories(CategoriesDTO categoriesDTO) throws IOException {
@@ -39,6 +41,7 @@ public class CategoriesService {
     }
 
     public void delete(long id) {
+        goodsService.setCategoriesToNull(id);
         categoriesRepository.deleteById(id);
     }
 

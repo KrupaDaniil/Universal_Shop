@@ -1,5 +1,6 @@
 package com.example.universal_shop.Models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +25,11 @@ public class Goods {
     private String brand;
     private String description;
 
-    @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "goods", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Images> images;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "categories_id")
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "categories_id", nullable = true)
     private Categories categories;
 }

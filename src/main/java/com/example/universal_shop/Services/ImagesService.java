@@ -32,10 +32,18 @@ public class ImagesService {
         }
 
         Images img = new Images();
-        img.setImageName(imagesDTO.getImageName());
-        img.setImage(imagesDTO.getImage().getBytes());
-        img.setMainImage(imagesDTO.getIsMainImage());
-        img.setGoods(goods);
+        if (imagesDTO.getIsMainImage() != null) {
+            img.setImageName(imagesDTO.getImageName());
+        }
+        if (imagesDTO.getImage() != null) {
+            img.setImage(imagesDTO.getImage().getBytes());
+        }
+        if (imagesDTO.getIsMainImage() != null) {
+            img.setIsMainImage(imagesDTO.getIsMainImage());
+        }
+        if (imagesDTO.getImageName() != null) {
+            img.setGoods(goods);
+        }
 
         imagesRepository.save(img);
     }

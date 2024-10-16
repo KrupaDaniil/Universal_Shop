@@ -71,4 +71,16 @@ public class GoodsService {
     public boolean existsById(long id) {
         return goodsRepository.existsById(id);
     }
+
+    public void setCategoriesToNull(long id) {
+        List<Goods> goodsList = findAll();
+
+        if (goodsList != null) {
+            goodsList.stream().filter(r -> r.getCategories().getId() == id).forEach(r -> {
+                r.setCategories(null);
+            });
+
+            goodsRepository.saveAll(goodsList);
+        }
+    }
 }

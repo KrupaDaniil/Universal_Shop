@@ -1,5 +1,6 @@
 package com.example.universal_shop.Models.DTOs;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
