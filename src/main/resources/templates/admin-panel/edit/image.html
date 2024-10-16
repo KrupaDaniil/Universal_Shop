@@ -13,6 +13,34 @@
 <div class="container">
     <header th:insert="~{general-pages/menu :: menu}"></header>
     <div class="content-section">
+        <div class="d-flex align-items-center justify-content-center my-3">
+            <div class="card px-4">
+                <div class="card-header bg-body">
+                    <div class="fw-semibold fs-5 text-center">Update image information</div>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/admin-panel/edit/image}" method="post" th:object="${imageDTO}">
+                        <input type="hidden" th:field="*{imdId}">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control form-control-sm" th:field="*{imageName}"
+                                       placeholder="Enter image name" aria-label="Enter image name">
+                            </div>
+                            <div class="col">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label fw-semibold" for="isMainImage">Is main image</label>
+                                    <input type="checkbox" th:field="*{isMainImage}" class="form-check-input" id="isMainImage">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-sm btn-outline-success px-4">Save</button>
+                                <a th:href="@{/admin-panel/product-management}" class="btn btn-sm btn-outline-secondary">Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     </div>
     <footer th:insert="~{general-pages/footer :: footer}"></footer>

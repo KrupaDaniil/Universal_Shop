@@ -214,7 +214,21 @@ public class AdminController {
         }
     }
 
-    // PostEdit
+    @PostMapping("/admin-panel/edit/image")
+    public String editImage(@ModelAttribute("imageDTO") ImageEditDTO imageDTO) {
+        if (imagesService.existsById(imageDTO.getImdId())) {
+            int res = imagesService.updateByImage(imageDTO);
+            if (res > 0) {
+                return "redirect:/admin-panel/product-management";
+            }
+            else {
+                return "redirect:/admin-panel/bad-request-product";
+            }
+        }
+        else {
+            return "redirect:/admin-panel/bad-request-product";
+        }
+    }
 
     @PostMapping("/admin-panel/add-role")
     public String addRole(@ModelAttribute("role") Role role) {
