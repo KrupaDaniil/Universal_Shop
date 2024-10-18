@@ -332,7 +332,7 @@ public class AdminController {
             if (user.getEmail() != null) {
                 currentUser.setEmail(user.getEmail());
             }
-            if (user.getPassword() != null) {
+            if (user.getPassword() != null && !user.getPassword().isBlank()) {
                 currentUser.setPassword(user.getPassword());
             }
             if (user.getPhone() != null) {

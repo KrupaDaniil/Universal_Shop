@@ -20,7 +20,7 @@
                             <div><a class="dropdown-item text-light" href="#">Action</a></div>
                             <div><a class="dropdown-item text-light" href="#">Another action</a></div>
                             <div th:if="${user}">
-                                <div th:each="role : ${user.getUserRoles()}" th:if="${role.getRole().getUserRole().equalsIgnoreCase('admin')}">
+                                <div th:each="role : ${user.getUserRoles()}" th:if="${role.getRole().getUserRole().equalsIgnoreCase('role_admin')}">
                                     <div><hr class="dropdown-divider bg-light"></div>
                                     <div><a class="dropdown-item text-light" th:href="@{/admin-panel}">Admin panel</a></div>
                                 </div>

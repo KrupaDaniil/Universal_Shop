@@ -1,6 +1,6 @@
 package com.example.universal_shop.Services;
 
-import com.example.universal_shop.Enum.Roles;
+import com.example.universal_shop.Enum.UserRoles;
 import com.example.universal_shop.Models.Role;
 import com.example.universal_shop.Models.User;
 import com.example.universal_shop.Models.UserRole;
@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("User with email " + user.getEmail() + " already exists");
         }
 
-        Role role = roleRepository.findByUserRole(Roles.USER.toString()).orElse(null);
+        Role role = roleRepository.findByUserRole(UserRoles.ROLE_USER.toString()).orElse(null);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
