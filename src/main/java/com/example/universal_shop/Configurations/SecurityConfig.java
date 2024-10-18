@@ -1,22 +1,24 @@
 package com.example.universal_shop.Configurations;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.RememberMeAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -24,13 +26,15 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final DataSource dataSource;
+    private final UserDetailsService userDetailsService;
     @Value("${RM_KEY}")
     private String rmKey;
-    private final UserDetailsService userDetailsService;
 
-
-    public SecurityConfig(@Lazy UserDetailsService userDetailsService) {
+    @Autowired
+    public SecurityConfig(@Lazy UserDetailsService userDetailsService, DataSource dataSource) {
         this.userDetailsService = userDetailsService;
+        this.dataSource = dataSource;
     }
 
     @Bean
@@ -51,27 +55,24 @@ public class SecurityConfig {
                 .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll()
                         .failureUrl("/register").permitAll()
                 )
-                .rememberMe((rm) -> {
-                    rm.rememberMeServices(rememberMeServices());
-                })
+                .rememberMe(rm -> rm.tokenRepository(persistentTokenRepository())
+                        .tokenValiditySeconds(1209600)
+                        .userDetailsService(userDetailsService)
+                        .key(rmKey))
                 .logout(logout -> logout.logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID"));
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-
-    @Bean
-    TokenBasedRememberMeServices rememberMeServices() {
-        return new TokenBasedRememberMeServices(rmKey, userDetailsService);
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class).build();
     }
 
     @Bean
-    RememberMeAuthenticationProvider rememberMeAuthenticationProvider() {
-        return new RememberMeAuthenticationProvider(rmKey);
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
     }
 }
