@@ -25,7 +25,11 @@ public class BasketController {
     }
 
     @GetMapping("/basket")
-    public String basket(@AuthenticationPrincipal User user, Model model) {
+    public String basket(@AuthenticationPrincipal User user, HttpSession session, Model model) {
+        BasketDTO basketDTO = (BasketDTO) session.getAttribute("formOrder");
+        if (basketDTO != null) {
+            model.addAttribute("basket", basketDTO);
+        }
         model.addAttribute("user", user);
         return "basket";
     }
@@ -52,11 +56,7 @@ public class BasketController {
             long pr = basketDTO.getGoodsList().stream().filter(r -> r.getGoods().getId() == product.getId()).count();
 
             if (pr > 0) {
-                basketDTO.getGoodsList().add(new ProductBasketDTO(product, 1, product.getPrice()));
-                basketDTO.setCount(basketDTO.getCount() + 1);
-                basketDTO.setTotalPrice(basketDTO.getTotalPrice() + product.getPrice());
-            }
-            else {
+
                 basketDTO.getGoodsList().forEach(obj -> {
                     if (obj.getGoods().getId() == product.getId()) {
                         obj.setQuantity(obj.getQuantity() + 1);
@@ -66,12 +66,18 @@ public class BasketController {
                 basketDTO.setCount(basketDTO.getCount() + 1);
                 basketDTO.setTotalPrice(basketDTO.getGoodsList().stream().map(r -> r.getGoods().getPrice()).reduce(Double::sum).orElse(0.0));
             }
+            else {
+                basketDTO.getGoodsList().add(new ProductBasketDTO(product, 1, product.getPrice()));
+                basketDTO.setCount(basketDTO.getCount() + 1);
+                basketDTO.setTotalPrice(basketDTO.getTotalPrice() + product.getPrice());
+
+            }
         }
 
         session.setAttribute("formOrder", basketDTO);
         model.addAttribute("basket", basketDTO);
 
-        return "basket";
+        return "redirect:/basket";
     }
 
     @GetMapping("basket/up/{productId}/{action}")
@@ -94,6 +100,8 @@ public class BasketController {
                     if (action.equals(BasketActions.ProductDOWN.toString())) {
                         if (product.getQuantity() == 1) {
                             basketDTO.getGoodsList().remove(product);
+                            yep = true;
+                            break;
                         }
                         if (product.getQuantity() >= 1) {
                             product.setQuantity(product.getQuantity() - 1);
@@ -128,7 +136,7 @@ public class BasketController {
             model.addAttribute("basket", basketDTO);
         }
 
-        return "basket";
+        return "redirect:/basket";
     }
 
 

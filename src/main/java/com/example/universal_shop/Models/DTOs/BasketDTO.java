@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasketDTO {
+public class BasketDTO implements Serializable {
     private List<ProductBasketDTO> goodsList;
     private long count;
     private double totalPrice;

@@ -79,19 +79,19 @@ public class ShopController {
     }
 
     @GetMapping("/product/image/{id}")
-    public ResponseEntity<String> getProductImage(@PathVariable long id) {
+    public ResponseEntity<byte[]> getProductImage(@PathVariable long id) {
         byte[] image;
 
         try {
             image = Objects.requireNonNull(goodsService.findById(id).getImages().stream()
                     .filter(Images::getIsMainImage).findFirst().orElse(null)).getImage();
+
+            return ResponseEntity.ok().header("Content-Type", "image/jpg").body(image);
         } catch (NullPointerException ex) {
             return ResponseEntity.notFound().build();
         }
 
-        String cnVl = Base64.getEncoder().encodeToString(image);
 
-        return ResponseEntity.ok().header("Content-Type", "image/jpg").body(cnVl);
     }
 
 

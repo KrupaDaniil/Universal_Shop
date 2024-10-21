@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="item, stat : ${basket.getGoodsList()}">
+                <tr th:if="${basket.getGoodsList()}" th:each="item, stat : ${basket.getGoodsList()}">
                     <th scope="row" th:text="${stat.count}"></th>
                     <td>
                         <img th:src="@{/product/image/{id}(id=${item.getGoods().getId()})}" th:alt="${item.getGoods().getProductName()}">
@@ -34,12 +34,12 @@
                     <td>
                         <div class="row">
                             <div class="col text-center">
-                                <a th:href="@{/basket/up/${productId}(productId=${item.getGoods().getId()})/ProductDOWN}"
+                                <a th:href="@{'/basket/up/'+ ${item.getGoods().getId()} + '/ProductDOWN'}"
                                    class="btn btn-sm btn-outline-warning">-</a>
                             </div>
-                            <div class="col" th:text="${item.getQuantity()}"></div>
+                            <div class="col text-center" th:text="${item.getQuantity()}"></div>
                             <div class="col text-center">
-                                <a th:href="@{/basket/up/${productId}(productId=${item.getGoods().getId()})/ProductUP}"
+                                <a th:href="@{'/basket/up/'+ ${item.getGoods().getId()} + '/ProductUP'}"
                                    class="btn btn-sm btn-outline-warning">+</a>
                             </div>
                         </div>
