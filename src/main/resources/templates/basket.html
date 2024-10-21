@@ -1,31 +1,35 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Universal Shop</title>
+    <title>Basket</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/generalStyles.css">
 </head>
 <body>
 <div class="container">
     <header th:insert="~{general-pages/menu :: menu}"></header>
-
     <div class="content-section">
-        <div class="img-container">
+        <div th:if="${basket}">
+        </div>
+        <div th:unless="${basket}">
             <div class="content-section-center">
-                <div class="display-5 fw-semibold text-gr main-text-gr text-uppercase text-center">universal</div>
-                <div class="display-6 fw-semibold text-gr main-text-gr text-uppercase text-center">sports store</div>
+                <div class="text-center display-5 fw-semibold mb-4">
+                    The basket is empty. Let's buy something
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <a th:href="@{/categories}" class="btn btn-outline-success px-4">GO</a>
+                </div>
             </div>
+
         </div>
     </div>
-
     <footer th:insert="~{general-pages/footer :: footer}"></footer>
-
 </div>
+
 <script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

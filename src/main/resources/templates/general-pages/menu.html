@@ -12,18 +12,13 @@
             </button>
             <div class="collapse navbar-collapse ms-4" id="navbarSupportedContent">
                 <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Categories
-                        </a>
-                        <div class="dropdown-menu dropdown-cs-menu">
-                            <div><a class="dropdown-item text-light" href="#">Action</a></div>
-                            <div><a class="dropdown-item text-light" href="#">Another action</a></div>
-                            <div th:if="${user}">
-                                <div th:each="role : ${user.getUserRoles()}" th:if="${role.getRole().getUserRole().equalsIgnoreCase('role_admin')}">
-                                    <div><hr class="dropdown-divider bg-light"></div>
-                                    <div><a class="dropdown-item text-light" th:href="@{/admin-panel}">Admin panel</a></div>
-                                </div>
+                    <div class="nav-item">
+                        <a class="nav-link text-light" th:href="@{/categories}">Categories</a>
+                    </div>
+                    <div th:if="${user}">
+                        <div th:each="role : ${user.getUserRoles()}" th:if="${role.getRole().getUserRole().equalsIgnoreCase('role_admin')}">
+                            <div class="nav-item">
+                                <a class="nav-link text-light" th:href="@{/admin-panel}">Admin panel</a>
                             </div>
                         </div>
                     </div>

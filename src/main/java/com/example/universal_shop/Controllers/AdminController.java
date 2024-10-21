@@ -5,8 +5,12 @@ import com.example.universal_shop.Models.DTOs.*;
 import com.example.universal_shop.Models.ModelsView.ImagesView;
 import com.example.universal_shop.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +29,11 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
     private final UserRoleService userRoleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AdminController(CategoriesService categoriesService, GoodsService goodsService, ImagesService imagesService,
-                           UserService userService, RoleService roleService, UserRoleService userRoleService)
+                           UserService userService, RoleService roleService, UserRoleService userRoleService, PasswordEncoder passwordEncoder)
     {
         this.categoriesService = categoriesService;
         this.goodsService = goodsService;
@@ -36,6 +41,7 @@ public class AdminController {
         this.userService = userService;
         this.roleService = roleService;
         this.userRoleService = userRoleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin-panel")
@@ -122,7 +128,7 @@ public class AdminController {
                 if (categoryDTO.getCategoryName() != null) {
                     ct.setCategoryName(categoryDTO.getCategoryName());
                 }
-                if (categoryDTO.getImage() != null) {
+                if (categoryDTO.getImage() != null && !categoryDTO.getImage().isEmpty()) {
                     ct.setImage(categoryDTO.getImage().getBytes());
                 }
 
@@ -280,7 +286,7 @@ public class AdminController {
     @PostMapping("/admin-panel/add-user")
     public String addUser(@ModelAttribute("userAP_DTO") UserAP_DTO user) {
         if (!userService.existsByEmail(user.getEmail())){
-            User newUser = new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(),
+            User newUser = new User(user.getName(), user.getSurname(), user.getEmail(), passwordEncoder.encode(user.getPassword()),
                     user.getPhone(), user.isEnabled(), user.isLocked());
             userService.saveUser(newUser);
 
@@ -295,7 +301,6 @@ public class AdminController {
     @GetMapping("/admin-panel/edit/user/{id}")
     public String editUser(@PathVariable(value = "id") long id, @AuthenticationPrincipal User userAt, Model model) {
         model.addAttribute("user", userAt);
-
         if (userService.existsById(id)){
             User user = userService.findById(id);
             if (user != null) {
@@ -333,7 +338,9 @@ public class AdminController {
                 currentUser.setEmail(user.getEmail());
             }
             if (user.getPassword() != null && !user.getPassword().isBlank()) {
-                currentUser.setPassword(user.getPassword());
+                if (!passwordEncoder.matches(user.getPassword(), currentUser.getPassword())) {
+                    currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
+                }
             }
             if (user.getPhone() != null) {
                 currentUser.setPhone(user.getPhone());
@@ -351,8 +358,6 @@ public class AdminController {
                 }
             }
         }
-
-
 
         return "redirect:/admin-panel/user-management";
     }

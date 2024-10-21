@@ -28,6 +28,11 @@
     min-width: 15dvw !important;
 }
 
+.row-categories-w {
+    min-height: 30dvh !important;
+    min-width: 60dvw !important;
+}
+
 .container {
     min-width: 680px !important;
 }

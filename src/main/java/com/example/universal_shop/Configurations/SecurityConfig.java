@@ -8,10 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,12 +51,17 @@ public class SecurityConfig {
                     rq.anyRequest().authenticated();
                 })
                 .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll()
-                        .failureUrl("/register").permitAll()
+                        .failureUrl("/login?error=true").permitAll()
                 )
                 .rememberMe(rm -> rm.tokenRepository(persistentTokenRepository())
                         .tokenValiditySeconds(1209600)
                         .userDetailsService(userDetailsService)
                         .key(rmKey))
+                .sessionManagement(session -> {
+                    session.sessionFixation().migrateSession();
+                    session.invalidSessionUrl("/login?session=invalid");
+                    session.maximumSessions(1).maxSessionsPreventsLogin(true);
+                })
                 .logout(logout -> logout.logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID"));
 
         return http.build();

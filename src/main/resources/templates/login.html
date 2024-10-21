@@ -22,17 +22,21 @@
                     </div>
 
                     <div class="card-body">
+                        <div th:if="${param.error}" class="text-center text-danger-emphasis mb-3">
+                            Incorrect username or password
+                        </div>
                         <form th:method="POST" th:action="@{/login}">
                             <input type="text" class="form-control form-control-sm mb-3" name="username"
                                    placeholder="Email" aria-label="Email">
                             <input type="password" class="form-control form-control-sm mb-3" name="password"
                                    placeholder="Password" aria-label="Password">
-                            <div class="form-check form-switch">
+                            <div class="form-check form-switch mb-3">
                                 <input type="checkbox" name="remember-me" class="form-check-input" id="rmUser">
                                 <label class="form-check-label" for="rmUser">Remember me</label>
                             </div>
                             <div class="d-flex align-items-center justify-content-center">
-                                <button type="submit" class="btn btn-sm btn-outline-secondary px-4">Go</button>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary px-4 me-2">Go</button>
+                                <a th:href="@{register}" class="btn btn-sm btn-outline-success px-3">Register</a>
                             </div>
                         </form>
                     </div>

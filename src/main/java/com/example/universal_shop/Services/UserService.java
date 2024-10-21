@@ -20,15 +20,12 @@ import java.util.Set;
 @Service
 public class UserService implements UserDetailsService {
     private final IUserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final IRoleRepository roleRepository;
 
     @Autowired
-    public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder,
-                       IRoleRepository roleRepository)
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
     {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
     }
 
@@ -40,8 +37,6 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User with email " + email + " not found");
         }
 
-        //user.setUserRoles(userRoleRepository.findByUser_Id(user.getId()));
-
         return user;
     }
 
@@ -52,7 +47,6 @@ public class UserService implements UserDetailsService {
 
         Role role = roleRepository.findByUserRole(UserRoles.ROLE_USER.toString()).orElse(null);
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
         user.setLocked(false);
         if (role != null) {
@@ -62,7 +56,6 @@ public class UserService implements UserDetailsService {
 
             user.setUserRoles(Set.of(userRole));
         }
-
 
         userRepository.save(user);
     }
@@ -80,7 +73,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         userRepository.save(user);
     }
 

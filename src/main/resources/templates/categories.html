@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Categories</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/generalStyles.css">
+</head>
+<body>
+<div class="container">
+  <header th:insert="~{general-pages/menu :: menu}"></header>
+
+  <div class="content-section">
+    <div class="img-container">
+        <div class="content-section-center">
+            <div class="row row-cols-4 row-categories-w justify-content-center align-items-center">
+                <div th:if="${categories}" th:each="category: ${categories}" class="col">
+
+                    <div class="card">
+                        <div class="card-header bg-body">
+                            <div class="fw-semibold text-center fs-5" th:text="${category.getCategoryName()}"></div>
+                        </div>
+                        <div class="card-img">
+                            <img th:src="@{/categories/image/{id}(id=${category.getId()})}"
+                                 th:alt="${category.getImage()}" class="w-100 px-4"/>
+                        </div>
+                        <div class="card-footer bg-body">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-outline-secondary">Select</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+  </div>
+
+  <footer th:insert="~{general-pages/footer :: footer}"></footer>
+
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>
