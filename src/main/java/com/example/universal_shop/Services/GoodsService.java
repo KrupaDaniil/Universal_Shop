@@ -82,4 +82,8 @@ public class GoodsService {
             goodsRepository.saveAll(goodsList);
         }
     }
+
+    public List<Goods> findGoodsByCategoryId(long ctId) {
+        return goodsRepository.findByCategoriesAndId(ctId);
+    }
 }

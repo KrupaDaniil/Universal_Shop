@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Goods</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/generalStyles.css">
+</head>
+<body>
+<div class="container">
+    <header th:insert="~{general-pages/menu :: menu}"></header>
+    <div class="content-section">
+        <div class="d-flex align-items-center justify-content-around" th:each="product : ${goods}">
+            <div class="card">
+                <div class="card-header bg-body">
+                    <div class="text-center fs-5 fw-semibold" th:text="${product.getProductName()}"></div>
+                </div>
+                <img th:src="@{/product/image/{id}(id=${product.getId()})}" th:alt="${product.getProductName()}">
+                <div class="card-body">
+                    <span class="fw-semibold me-1">Price:</span>
+                    <span class="fw-semibold" th:text="${product.getPrice()}"></span>
+                </div>
+                <div class="card-footer bg-body">
+                    <div class="row">
+                        <div class="col">
+                            <a th:href="@{/product/details/{id}(id=${product.getId()})}"
+                               class="btn btn-sm btn-outline-secondary">Details</a>
+                        </div>
+                        <div class="col">
+                            <a th:href="@{/basket/{productId}(productId=${product.getId()})}" class="btn btn-sm btn-outline-danger px-4">Buy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="~{general-pages/footer :: footer}"></footer>
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

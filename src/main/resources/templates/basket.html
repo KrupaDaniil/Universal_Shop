@@ -14,6 +14,41 @@
     <header th:insert="~{general-pages/menu :: menu}"></header>
     <div class="content-section">
         <div th:if="${basket}">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Product name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item, stat : ${basket.getGoodsList()}">
+                    <th scope="row" th:text="${stat.count}"></th>
+                    <td>
+                        <img th:src="@{/product/image/{id}(id=${item.getGoods().getId()})}" th:alt="${item.getGoods().getProductName()}">
+                    </td>
+                    <td th:text="${item.getGoods().getProductName()}"></td>
+                    <td>
+                        <div class="row">
+                            <div class="col text-center">
+                                <a th:href="@{/basket/up/${productId}(productId=${item.getGoods().getId()})/ProductDOWN}"
+                                   class="btn btn-sm btn-outline-warning">-</a>
+                            </div>
+                            <div class="col" th:text="${item.getQuantity()}"></div>
+                            <div class="col text-center">
+                                <a th:href="@{/basket/up/${productId}(productId=${item.getGoods().getId()})/ProductUP}"
+                                   class="btn btn-sm btn-outline-warning">+</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td th:text="${item.getFinalPrice()}"></td>
+                </tr>
+
+                </tbody>
+            </table>
         </div>
         <div th:unless="${basket}">
             <div class="content-section-center">
@@ -24,7 +59,6 @@
                     <a th:href="@{/categories}" class="btn btn-outline-success px-4">GO</a>
                 </div>
             </div>
-
         </div>
     </div>
     <footer th:insert="~{general-pages/footer :: footer}"></footer>
