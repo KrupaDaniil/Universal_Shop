@@ -35,9 +35,7 @@ public class BasketController {
     }
 
     @GetMapping("/basket/{productId}")
-    public String formOrder(@PathVariable long productId, HttpSession session,
-                            @AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
+    public String formOrder(@PathVariable long productId, HttpSession session, Model model) {
         Goods product = goodsService.findById(productId);
         BasketDTO basketDTO = (BasketDTO) session.getAttribute("formOrder");
 
@@ -82,8 +80,7 @@ public class BasketController {
 
     @GetMapping("basket/up/{productId}/{action}")
     public String upDown(@PathVariable long productId, @PathVariable String action,
-                         HttpSession session, @AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
+                         HttpSession session, Model model) {
 
         BasketDTO basketDTO = (BasketDTO) session.getAttribute("formOrder");
 
@@ -113,17 +110,15 @@ public class BasketController {
             }
 
             if (yep) {
-                if (basketDTO.getGoodsList().isEmpty())
+                if (!basketDTO.getGoodsList().isEmpty())
                 {
                     if (action.equals(BasketActions.ProductUP.toString())) {
                         basketDTO.setCount(basketDTO.getCount() + 1);
-                        basketDTO.setTotalPrice(basketDTO.getGoodsList().stream()
-                                .map(r -> r.getGoods().getPrice()).reduce(Double::sum).orElse(0.0));
+                        basketDTO.setTotalPrice(basketDTO.getGoodsList().stream().map(ProductBasketDTO::getFinalPrice).reduce(Double::sum).orElse(0.0));
                     }
                     if (action.equals(BasketActions.ProductDOWN.toString())) {
                         basketDTO.setCount(basketDTO.getCount() - 1);
-                        basketDTO.setTotalPrice(basketDTO.getGoodsList().stream()
-                                .map(r -> r.getGoods().getPrice()).reduce(Double::sum).orElse(0.0));
+                        basketDTO.setTotalPrice(basketDTO.getGoodsList().stream().map(ProductBasketDTO::getFinalPrice).reduce(Double::sum).orElse(0.0));
                     }
                 }
                 else {

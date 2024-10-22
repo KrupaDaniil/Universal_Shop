@@ -29,8 +29,48 @@
 }
 
 .row-categories-w {
-    min-height: 30dvh !important;
-    min-width: 60dvw !important;
+    height: 30dvh !important;
+    width: 60dvw !important;
+}
+
+.card-category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 30dvh !important;
+    box-shadow: 1px 1px 8px #182848;
+    background: white !important;
+    border-radius: 0.5rem !important;
+}
+.card-category-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3dvh;
+    max-height: 5dvh;
+    vertical-align: middle;
+    font-weight: bolder;
+    font-size: 1.2rem !important;
+}
+.card-category-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 5px 15px 5px;
+    margin: 10px auto;
+    height: 18dvh !important;
+    border-top: 1px solid rgba(176, 176, 178, 0.7) !important;
+}
+.card-category-body>div>img{
+    width: 75% !important;
+}
+.card-category-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3dvh;
+    max-height: 5dvh;
 }
 
 .container {
@@ -75,4 +115,60 @@
 
 .navbar-toggler:focus {
     box-shadow: none !important;
+}
+
+.img-basket {
+    height: 8dvh !important;
+}
+.tb-basket-st {
+    border-spacing: 0 5px !important;
+    border-collapse: separate !important;
+}
+
+.product-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 35dvh !important;
+    width: 30dvh !important;
+    box-shadow: 1px 1px 8px #182848;
+    background: white !important;
+    border-radius: 0.5rem !important;
+}
+
+.product-container-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4dvh !important;
+    font-size: 1.2rem !important;
+    font-weight: bolder !important;
+}
+
+.product-container-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20dvh !important;
+}
+.product-container-image>img {
+    width: 70% !important;
+}
+.product-container-info {
+    display: flex;
+    align-items: center;
+    justify-content: end !important;
+    height: 4dvh !important;
+    width: 100%;
+    margin-right: 1.5rem !important;
+}
+
+.product-container-footer {
+    display: flex;
+    align-items: center;
+    justify-content: end !important;
+    height: 5dvh !important;
+    width: 100%;
+    margin-right: 1.5rem !important;
 }

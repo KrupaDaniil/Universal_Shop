@@ -19,18 +19,18 @@
             <div class="row row-cols-4 row-categories-w justify-content-center align-items-center">
                 <div th:if="${categories}" th:each="category: ${categories}" class="col">
 
-                    <div class="card">
-                        <div class="card-header bg-body">
-                            <div class="fw-semibold text-center fs-5" th:text="${category.getCategoryName()}"></div>
-                        </div>
-                        <div class="card-img">
-                            <img th:src="@{/categories/image/{id}(id=${category.getId()})}"
-                                 th:alt="${category.getImage()}" class="w-100 px-4"/>
-                        </div>
-                        <div class="card-footer bg-body">
+                    <div class="card-category">
+                        <div class="card-category-title" th:text="${category.getCategoryName()}"></div>
+
+                        <div class="card-category-body">
                             <div class="d-flex align-items-center justify-content-center">
-                                <a th:href="@{/goods/{ctId}(ctId=${category.getId()})}" class="btn btn-outline-secondary">Select</a>
+                                <img th:src="@{/categories/image/{id}(id=${category.getId()})}"
+                                     th:alt="${category.getImage()}"/>
                             </div>
+                        </div>
+
+                        <div class="card-category-footer">
+                            <a th:href="@{/goods/{ctId}(ctId=${category.getId()})}" class="btn btn-sm btn-outline-secondary px-4">Select</a>
                         </div>
 
                     </div>
