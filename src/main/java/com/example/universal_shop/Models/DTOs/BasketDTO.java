@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BasketDTO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private List<ProductBasketDTO> goodsList;
     private long count;
     private double totalPrice;
