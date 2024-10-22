@@ -40,7 +40,9 @@ public class GoodsService {
             if (goodsDto.getProductName() != null) {
                 goods.setProductName(goodsDto.getProductName());
             }
+
             goods.setPrice(goodsDto.getPrice());
+
             if (goodsDto.getBrand() != null) {
                 goods.setBrand(goodsDto.getBrand());
             }
@@ -48,11 +50,13 @@ public class GoodsService {
                 goods.setDescription(goodsDto.getDescription());
             }
             goods.setCategories(ct);
-            goodsRepository.save(goods);
+
         }
         else {
             throw new IllegalArgumentException("Invalid goods id");
         }
+
+        goodsRepository.save(goods);
     }
 
     public List<Goods> findAll() {

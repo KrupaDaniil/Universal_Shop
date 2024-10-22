@@ -47,12 +47,12 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                 (rq) -> {
+                    rq.requestMatchers(HttpMethod.GET).permitAll();
+                    rq.requestMatchers(HttpMethod.POST).permitAll();
                     rq.requestMatchers("/","/register", "/login", "/css/**", "/js/**", "/images/**",
                                 "/errors/fail-registration", "/general-pages/**", "/basket", "/categories",
                             "/categories/image/**", "/goods").permitAll();
-                    rq.requestMatchers("admin-panel/**").hasRole("ADMIN");
-                    rq.requestMatchers(HttpMethod.GET).permitAll();
-                    rq.requestMatchers(HttpMethod.POST).permitAll();
+                    rq.requestMatchers("admin-panel/**").hasAnyRole("ADMIN");
                     rq.anyRequest().authenticated();
 
                 })

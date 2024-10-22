@@ -145,7 +145,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("admin-panel/delete-category/{id}")
+    @GetMapping("/admin-panel/delete-category/{id}")
     public String deleteCategory(@PathVariable("id") long id) {
         if (categoriesService.existsById(id)) {
             categoriesService.delete(id);
