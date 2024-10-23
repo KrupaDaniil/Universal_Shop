@@ -8,7 +8,6 @@ import com.example.universal_shop.Repo.IGoodsRepository;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -80,9 +79,7 @@ public class GoodsService {
         List<Goods> goodsList = findAll();
 
         if (goodsList != null) {
-            goodsList.stream().filter(r -> r.getCategories().getId() == id).forEach(r -> {
-                r.setCategories(null);
-            });
+            goodsList.stream().filter(r -> r.getCategories().getId() == id).forEach(r -> r.setCategories(null));
 
             goodsRepository.saveAll(goodsList);
         }
