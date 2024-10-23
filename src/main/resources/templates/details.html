@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Details</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/generalStyles.css">
+</head>
+<body>
+<div class="container">
+    <header th:insert="~{general-pages/menu :: menu}"></header>
+    <div class="content-section">
+        <div class="d-flex align-items-center justify-content-center">
+            <div class="product-container-details">
+                <div class="button-section align-items-center">
+                        <a class="btn btn-sm btn-outline-danger ms-3 px-4">Back</a>
+                </div>
+                <div class="image-section">
+                    <div id="carouselExample" class="carousel slide carousel-dark w-75">
+                        <div class="carousel-inner">
+                            <div th:each="item : ${product.getImages()}" class="px-4">
+                                <div th:if="${item.getIsMainImage()}" class="carousel-item active">
+                                    <img th:src="@{/product/images/{id}(id=${item.getId()})}" class="d-block w-100" th:alt="${item.getImageName()}">
+                                </div>
+                                <div th:unless="${item.getIsMainImage()}" class="carousel-item">
+                                    <img th:src="@{/product/images/{id}(id=${item.getId()})}" class="d-block w-100" th:alt="${item.getImageName()}">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="data-section">
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-3 fw-semibold fs-6">Category</div>
+                        <div class="col-5" th:text="${product.getCategories().getCategoryName()}"></div>
+                    </div>
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-3 fw-semibold fs-6">Brand</div>
+                        <div class="col-5" th:text="${product.getBrand()}"></div>
+                    </div>
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-3 fw-semibold fs-6">Product name</div>
+                        <div class="col-5" th:text="${product.getProductName()}"></div>
+                    </div>
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-3 fw-semibold fs-6">Description</div>
+                        <div class="col-5" th:text="${product.getDescription()}"></div>
+                    </div>
+
+                </div>
+                <div class="button-section align-items-center justify-content-end px-3">
+                    <span class="fw-semibold fs-6 me-2">Price</span>
+                    <span class="fw-semibold fs-6 me-2" th:text="${product.getPrice()}"></span>
+                    <a class="btn btn-sm btn-outline-success ms-3 px-4">Buy</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <footer th:insert="~{general-pages/footer :: footer}"></footer>
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

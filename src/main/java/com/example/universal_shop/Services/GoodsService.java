@@ -8,6 +8,7 @@ import com.example.universal_shop.Repo.IGoodsRepository;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -51,12 +52,12 @@ public class GoodsService {
             }
             goods.setCategories(ct);
 
+            goodsRepository.save(goods);
+
         }
         else {
             throw new IllegalArgumentException("Invalid goods id");
         }
-
-        goodsRepository.save(goods);
     }
 
     public List<Goods> findAll() {
