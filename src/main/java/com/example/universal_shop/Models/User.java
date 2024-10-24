@@ -55,10 +55,6 @@ public class User implements UserDetails, Serializable {
     @JsonManagedReference
     private Set<UserRole> userRoles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    private Set<Orders> userOrders;
-
     @Override
     public boolean isEnabled() {
         return enabled;

@@ -29,6 +29,7 @@
                 <div class="product-container-footer">
                     <a th:href="@{/product/details/{id}(id=${product.getId()})}"
                        class="btn btn-sm btn-outline-secondary me-2">Details</a>
+                    <!--Update to form-->
                     <a th:href="@{/basket/{productId}(productId=${product.getId()})}" class="btn btn-sm btn-outline-danger px-4">Buy</a>
                 </div>
             </div>

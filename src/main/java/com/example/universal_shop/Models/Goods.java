@@ -35,8 +35,4 @@ public class Goods implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "categories_id", nullable = true)
     private Categories categories;
-
-    @OneToMany(mappedBy = "goods", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    private Set<Orders> goodsOrders;
 }

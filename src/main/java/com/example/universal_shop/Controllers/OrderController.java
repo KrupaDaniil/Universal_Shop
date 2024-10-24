@@ -1,12 +1,16 @@
 package com.example.universal_shop.Controllers;
 
 
+import com.example.universal_shop.Enum.UserRoles;
 import com.example.universal_shop.Models.DTOs.BasketDTO;
 import com.example.universal_shop.Models.DTOs.ProductBasketDTO;
 import com.example.universal_shop.Models.DTOs.UserOrderDTO;
 import com.example.universal_shop.Models.Orders;
+import com.example.universal_shop.Models.Role;
 import com.example.universal_shop.Models.User;
+import com.example.universal_shop.Models.UserRole;
 import com.example.universal_shop.Services.OrdersService;
+import com.example.universal_shop.Services.UserRoleService;
 import com.example.universal_shop.Services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +27,13 @@ import java.util.*;
 public class OrderController {
     private final OrdersService ordersService;
     private final UserService userService;
+    private final UserRoleService userRoleService;
 
     @Autowired
-    public OrderController(OrdersService ordersService, UserService userService) {
+    public OrderController(OrdersService ordersService, UserService userService, UserRoleService userRoleService) {
         this.ordersService = ordersService;
         this.userService = userService;
-    }
-
-    @GetMapping("/order")
-    public String order(@AuthenticationPrincipal User user, Model model) {
-        if (user != null) {
-            model.addAttribute("user", user);
-        }
-        return "order";
+        this.userRoleService = userRoleService;
     }
 
     @PostMapping("/place/order")
@@ -43,10 +41,22 @@ public class OrderController {
         BasketDTO basketDTO = (BasketDTO) session.getAttribute("formOrder");
         User user = userService.findByEmail(userOrderDTO.getUserEmail());
 
-        if (user != null && basketDTO != null) {
+        if (basketDTO != null) {
             Orders orders = new Orders();
 
-            orders.setUser_id(user.getId());
+            if (user != null ) {
+                orders.setUser_id(user.getId());
+            }
+            else {
+                User unknownUser = new User();
+                unknownUser.setEmail(userOrderDTO.getUserEmail());
+                Role role = new Role();
+                role.setUserRole(UserRoles.ROLE_ANONYMOUS.toString());
+                userService.saveUser(unknownUser);
+                UserRole userRole = new UserRole(unknownUser, role);
+                userRoleService.save(userRole);
+            }
+
 
             Map<Long, Long> goodsId = new HashMap<>();
             for (ProductBasketDTO products : basketDTO.getGoodsList()) {
@@ -64,6 +74,11 @@ public class OrderController {
             orders.setOrderIdentifier(u_id);
 
             ordersService.saveOrder(orders);
+
+            if (ordersService.existsOrderByOrderId(u_id)) {
+                basketDTO = null;
+                session.setAttribute("formOrder", basketDTO);
+            }
 
             return "redirect:/";
         }

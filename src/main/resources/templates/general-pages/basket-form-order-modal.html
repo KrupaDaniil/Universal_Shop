@@ -1,0 +1,21 @@
+<div class="modal fade" id="formOrderModel" tabindex="-1" th:fragment="basket-form-order-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Placing an order</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" th:action="@{place/order}">
+                <div class="modal-body">
+                    <input type="text" class="form-control form-control-sm my-3" placeholder="Enter your email"
+                           aria-label="Enter your email" th:name="userEmail" th:value="${user.getEmail()} ? ${user.getEmail()} : ''">
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <button type="submit" class="btn btn-sm btn-outline-success px-4">Buy</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

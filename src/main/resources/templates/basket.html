@@ -58,7 +58,8 @@
                         </div>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-sm btn-outline-secondary px-3">Order</a>
+                        <button type="button" class="btn btn-sm btn-outline-secondary px-3" data-bs-toggle="modal"
+                                data-bs-target="#formOrderModel">Order</button>
                     </td>
                 </tr>
                 </tfoot>
@@ -67,6 +68,9 @@
         </div>
         <div th:unless="${basket}" th:insert="~{general-pages/basket-is-empty :: basket-is-empty}"></div>
     </div>
+
+    <div th:insert="~{general-pages/basket-form-order-modal :: basket-form-order-modal}"></div>
+
     <footer th:insert="~{general-pages/footer :: footer}"></footer>
 </div>
 
