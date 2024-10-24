@@ -3,6 +3,7 @@ package com.example.universal_shop.Controllers;
 import com.example.universal_shop.Models.*;
 import com.example.universal_shop.Models.DTOs.*;
 import com.example.universal_shop.Models.ModelsView.ImagesView;
+import com.example.universal_shop.Models.ModelsView.OrdersView;
 import com.example.universal_shop.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,13 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
     private final UserRoleService userRoleService;
+    private final OrdersService ordersService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AdminController(CategoriesService categoriesService, GoodsService goodsService, ImagesService imagesService,
-                           UserService userService, RoleService roleService, UserRoleService userRoleService, PasswordEncoder passwordEncoder)
+                           UserService userService, RoleService roleService, UserRoleService userRoleService,
+                           OrdersService ordersService, PasswordEncoder passwordEncoder)
     {
         this.categoriesService = categoriesService;
         this.goodsService = goodsService;
@@ -38,6 +41,7 @@ public class AdminController {
         this.userService = userService;
         this.roleService = roleService;
         this.userRoleService = userRoleService;
+        this.ordersService = ordersService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -66,11 +70,13 @@ public class AdminController {
         List<Categories> categories = categoriesService.findAll();
         List<Goods> goods = goodsService.findAll();
         List<ImagesView> images = imagesService.findAllView();
+        List<OrdersView> orders = ordersService.getAllOrders();
 
 
         model.addAttribute("categories", categories);
         model.addAttribute("goods", goods);
         model.addAttribute("images", images);
+        model.addAttribute("orders", orders);
 
         model.addAttribute("user", user);
 
@@ -385,6 +391,30 @@ public class AdminController {
         }
 
         return "redirect:/admin-panel/user-management";
+    }
+
+    @GetMapping("/admin-panel/processing-complete/{id}")
+    public String processingComplete(@PathVariable(value = "id") String id) {
+        if (ordersService.existsOrderById(id)) {
+            ordersService.saveCompletedOrder(id);
+        }
+        return "redirect:/admin-panel/product-management";
+    }
+
+    @GetMapping("/admin-panel/delete-order/{id}")
+    public String deleteOrder(@PathVariable(value = "id") String id) {
+        long res = 0;
+
+        if (ordersService.existsOrderById(id)) {
+            res = ordersService.deleteOrder(id);
+        }
+
+        if (res > 0) {
+            return "redirect:/admin-panel/product-management";
+        }
+        else {
+            return "redirect:/admin-panel/bad-request-product";
+        }
     }
 
 

@@ -21,6 +21,8 @@
                         type="button" role="tab">Goods</button>
                 <button class="nav-link link-body-emphasis" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images"
                         type="button" role="tab">Images</button>
+                <button class="nav-link link-body-emphasis" id="nav-orders-tab" data-bs-toggle="tab" data-bs-target="#nav-orders"
+                        type="button" role="tab">Orders</button>
             </div>
         </nav>
 
@@ -192,7 +194,7 @@
                     </form>
                 </div>
 
-                <table class="table">
+                <table class="table align-middle">
                     <thead>
                     <tr>
                         <th scope="col"></th>
@@ -230,6 +232,43 @@
                     </tbody>
                 </table>
 
+            </div>
+            <div class="tab-pane fade" id="nav-orders" role="tabpanel" aria-labelledby="nav-images-tab" tabindex="0">
+                <table class="table my-3">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Full name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Total quantity</th>
+                        <th scope="col">Total price</th>
+                        <th scope="col">Processed</th>
+                        <th scope="col">Order Id</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${orders}" th:each="order, stat : ${orders}">
+                        <th scope="row" th:text="${stat.count}"></th>
+                        <td th:text="${order.getUser().getSurname() + ' ' + order.getUser().getName()}"></td>
+                        <td th:text="${order.getUser().getEmail()}"></td>
+                        <td>
+                            <div th:each="product : ${order.getProducts()}"
+                                 th:text="${product.getKey().getProductName() + ' - ' + product.getValue()}"
+                                 class="d-flex align-items-center flex-wrap"></div>
+                        </td>
+                        <td class="text-center" th:text="${order.getQuantity()}"></td>
+                        <td th:text="${order.getPrice()}"></td>
+                        <td th:text="${order.isProcessed() ? 'completed' : 'in processing'}"></td>
+                        <td th:text="${order.getOrderIdentifier()}"></td>
+                        <td>
+                            <a th:href="@{'/admin-panel/processing-complete/' + ${order.getId()}}" class="btn btn-sm btn-outline-secondary px-3 my-1">Finished</a>
+                            <a th:href="@{'/admin-panel/delete-order/' + ${order.getId()}}" class="btn btn-sm btn-outline-danger px-3 my-1">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
