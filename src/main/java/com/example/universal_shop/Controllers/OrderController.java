@@ -5,6 +5,7 @@ import com.example.universal_shop.Enum.UserRoles;
 import com.example.universal_shop.Models.DTOs.BasketDTO;
 import com.example.universal_shop.Models.DTOs.ProductBasketDTO;
 import com.example.universal_shop.Models.DTOs.UserOrderDTO;
+import com.example.universal_shop.Models.ModelsView.UserOrdersView;
 import com.example.universal_shop.Models.Orders;
 import com.example.universal_shop.Models.Role;
 import com.example.universal_shop.Models.User;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.*;
@@ -90,5 +92,24 @@ public class OrderController {
     private String generateOrderIdentifier() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 10).toUpperCase();
     }
+
+    @GetMapping("/management/orders")
+    public String getUserOrders(@AuthenticationPrincipal User user, Model model) {
+        if (user != null) {
+            model.addAttribute("user", user);
+            List<UserOrdersView> orders = ordersService.getAllUserOrders(user.getId());
+            model.addAttribute("userOrders", orders);
+        }
+
+        return "management/orders";
+    }
+
+    @GetMapping("/management/orders/{orderId}")
+    public String canceledOrder(@PathVariable String orderId) {
+        ordersService.saveCanceledOrder(orderId);
+
+        return "redirect:/management/orders";
+    }
+
 
 }

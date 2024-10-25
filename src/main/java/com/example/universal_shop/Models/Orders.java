@@ -24,6 +24,7 @@ public class Orders implements Serializable {
     private long quantity;
     private double price;
     private boolean processed;
+    private boolean canceledUser;
     @Column(unique = true)
     private String orderIdentifier;
 }

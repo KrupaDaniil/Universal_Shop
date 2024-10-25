@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Your orders</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/generalStyles.css">
+</head>
+<body>
+<div class="container">
+<header th:insert="~{general-pages/menu :: menu}"></header>
+
+<div class="content-section">
+    <div th:if="${userOrders}">
+        <table class="table my-3 align-middle">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col" class="text-center">Products</th>
+                <th scope="col">Total quantity</th>
+                <th scope="col">Total price</th>
+                <th scope="col">Processed</th>
+                <th scope="col">Cancelled</th>
+                <th scope="col">Order Id</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order, stat : ${userOrders}" th:class="${order.isProcessed()} ? 'border-success' : ''" th:classappend="${order.isCanceledUser()}  ? 'border-warning opacity-75' : '' ">
+                <th scope="row" th:text="${stat.count}"></th>
+                <td>
+                    <div th:each="product : ${order.getProducts()}" class="d-flex align-items-center justify-content-center flex-wrap">
+                        <div class="row w-100 align-items-center">
+                            <div class="col">
+                                <div class="d-flex align-items-center">
+                                    <img th:src="@{/product/image/{id}(id=${product.getKey().getId()})}" th:alt="${product.getKey().getProductName()}"
+                                         class="rounded float-start d-block mx-auto img-basket"/>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div th:text="${product.getKey().getProductName() + ' X ' + product.getValue()}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center" th:text="${order.getQuantity()}"></td>
+                <td th:text="${order.getPrice()}"></td>
+                <td>
+                    <div th:if="${order.isProcessed()}" class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle text-success fw-semibold" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                        </svg>
+                    </div>
+                    <div th:unless="${order.isProcessed()}" class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle text-danger fw-semibold" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </div>
+                </td>
+                <td>
+                    <div th:if="${order.isCanceledUser()}" class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 text-danger fw-semibold" viewBox="0 0 16 16">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                        </svg>
+                    </div>
+                    <div th:unless="${order.isCanceledUser()}" class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-lg text-success fw-semibold" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
+                        </svg>
+                    </div>
+                </td>
+                <td th:text="${order.getOrderIdentifier()}"></td>
+                <td>
+                    <a th:unless="${order.isCanceledUser()}"
+                       th:href="@{'/management/orders/' + ${order.getOrderIdentifier()}}"
+                       class="btn btn-sm btn-outline-secondary px-3 my-1">Cancel</a>
+
+                    <a th:if="${order.isCanceledUser()}"
+                       th:href="@{'/management/orders/' + ${order.getOrderIdentifier()}}"
+                       class="btn btn-sm btn-outline-secondary px-3 my-1 disabled">Cancel</a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:unless="${userOrders}"></div>
+
+</div>
+
+<footer th:insert="~{general-pages/footer :: footer}"></footer>
+
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

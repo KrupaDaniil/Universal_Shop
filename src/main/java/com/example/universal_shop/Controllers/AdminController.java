@@ -406,15 +406,15 @@ public class AdminController {
         long res = 0;
 
         if (ordersService.existsOrderById(id)) {
-            res = ordersService.deleteOrder(id);
+            try {
+                ordersService.deleteOrder(id);
+            } catch (IllegalArgumentException ex) {
+                return "redirect:/admin-panel/bad-request-product";
+            }
+
         }
 
-        if (res > 0) {
-            return "redirect:/admin-panel/product-management";
-        }
-        else {
-            return "redirect:/admin-panel/bad-request-product";
-        }
+        return "redirect:/admin-panel/product-management";
     }
 
 

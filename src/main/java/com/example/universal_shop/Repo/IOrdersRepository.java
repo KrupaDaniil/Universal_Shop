@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public interface IOrdersRepository extends JpaRepository<Orders, Long> {
     @Query("select o from Orders o where o.user_id = :userId")
-    Set<Orders> findByUser_id(long userId);
+    List<Orders> findByUser_id(long userId);
 
     Optional<Orders> findById(String id);
 
@@ -30,5 +31,5 @@ public interface IOrdersRepository extends JpaRepository<Orders, Long> {
     @Modifying
     @Transactional
     @Query("delete from Orders r where r.id = :id")
-    long deleteById(String id);
+    void deleteById(String id);
 }

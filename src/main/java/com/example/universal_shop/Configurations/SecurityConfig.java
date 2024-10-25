@@ -51,7 +51,8 @@ public class SecurityConfig {
                     rq.requestMatchers("/","/register", "/login", "/css/**", "/js/**", "/images/**",
                                 "/errors/fail-registration", "/general-pages/**", "/basket", "/categories",
                             "/categories/image/**", "/goods").permitAll();
-                    rq.requestMatchers("admin-panel/**").hasAnyRole("ADMIN");
+                    rq.requestMatchers("/admin-panel/**").hasAnyRole("ADMIN");
+                    rq.requestMatchers( "/management/orders","/management/orders/**").hasAnyRole("USER", "ADMIN");
                     rq.anyRequest().authenticated();
 
                 })

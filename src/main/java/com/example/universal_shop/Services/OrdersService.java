@@ -2,6 +2,7 @@ package com.example.universal_shop.Services;
 
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Models.ModelsView.OrdersView;
+import com.example.universal_shop.Models.ModelsView.UserOrdersView;
 import com.example.universal_shop.Models.Orders;
 import com.example.universal_shop.Repo.IGoodsRepository;
 import com.example.universal_shop.Repo.IOrdersRepository;
@@ -29,7 +30,7 @@ public class OrdersService {
     }
 
     public void saveCompletedOrder(String id) {
-        Orders orders = ordersRepository.findById(id).orElse(null);
+        Orders orders = getOrderById(id);
 
         if (orders == null) {
             throw new IllegalArgumentException("Order from id " + id + " not found");
@@ -40,28 +41,28 @@ public class OrdersService {
         ordersRepository.save(orders);
     }
 
+    public void saveCanceledOrder(String orderId) {
+        Orders orders = getOrderByOrderId(orderId);
+
+        if (orders == null) {
+            throw new IllegalArgumentException("Order from id " + orderId + " not found");
+        }
+
+        orders.setCanceledUser(true);
+
+        ordersRepository.save(orders);
+    }
+
     public List<OrdersView> getAllOrders() {
         List<Orders> orders = ordersRepository.findAll();
 
         if (!orders.isEmpty()) {
             List<OrdersView> ordersViews = new ArrayList<>();
 
-            OrdersView ordersView = new OrdersView();
-
             for (Orders order : orders) {
-                Map<Goods, Long> goodsMap = new HashMap<>();
-                ordersView.setId(order.getId());
-                ordersView.setUser(userRepository.findById(order.getUser_id()).orElse(null));
-                for (Map.Entry<Long, Long> entry: order.getProduct().entrySet()) {
-                    goodsMap.put(goodsRepository.findById(entry.getKey()).orElse(null), entry.getValue());
-                }
-                ordersView.setProducts(goodsMap);
-                ordersView.setQuantity(order.getQuantity());
-                ordersView.setPrice(order.getPrice());
-                ordersView.setProcessed(order.isProcessed());
-                ordersView.setOrderIdentifier(order.getOrderIdentifier());
-
-                ordersViews.add(ordersView);
+                ordersViews.add(new OrdersView(order.getId(), userRepository.findById(order.getUser_id()).orElse(null),
+                        convertToGoodsMap(order.getProduct()), order.getQuantity(), order.getPrice(), order.isProcessed(),
+                        order.isCanceledUser(), order.getOrderIdentifier()));
             }
 
             return ordersViews;
@@ -70,8 +71,22 @@ public class OrdersService {
         return null;
     }
 
-    public Set<Orders> getAllUserOrders(long userId) {
-        return ordersRepository.findByUser_id(userId);
+    public List<UserOrdersView> getAllUserOrders(long userId) {
+        List<Orders>  userOrders = ordersRepository.findByUser_id(userId);
+
+        if (userOrders.isEmpty()) {
+            return null;
+        }
+
+        List<UserOrdersView> userOrdersViews = new ArrayList<>();;
+
+        for (Orders order : userOrders) {
+
+            userOrdersViews.add(new UserOrdersView(convertToGoodsMap(order.getProduct()), order.getQuantity(), order.getPrice(),
+                    order.isProcessed(), order.isCanceledUser(), order.getOrderIdentifier()));
+        }
+
+        return userOrdersViews;
     }
 
     public Orders getOrderById(String id) {
@@ -82,8 +97,8 @@ public class OrdersService {
         return ordersRepository.findByOrderIdentifier(orderId).orElse(null);
     }
 
-    public long deleteOrder(String id) {
-        return ordersRepository.deleteById(id);
+    public void deleteOrder(String id) {
+        ordersRepository.deleteById(id);
     }
 
     public boolean existsOrderById(String id) {
@@ -102,6 +117,15 @@ public class OrdersService {
         return ordersRepository.existsByProcessedAndOrderIdentifier(orderId);
     }
 
+    private Map<Goods, Long> convertToGoodsMap(Map<Long, Long> userGoods) {
+        Map<Goods, Long> goodsMap = new HashMap<>();
+
+        for (Map.Entry<Long, Long> entry: userGoods.entrySet()) {
+            goodsMap.put(goodsRepository.findById(entry.getKey()).orElse(null), entry.getValue());
+        }
+
+        return goodsMap;
+    }
 
 
 }

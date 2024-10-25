@@ -1,7 +1,6 @@
 package com.example.universal_shop.Models.ModelsView;
 
 import com.example.universal_shop.Models.Goods;
-import com.example.universal_shop.Models.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersView {
-    private String id;
-    private User user;
+public class UserOrdersView {
     private Map<Goods, Long> products;
     private long quantity;
     private double price;
