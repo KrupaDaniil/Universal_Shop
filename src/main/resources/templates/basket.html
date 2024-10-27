@@ -28,8 +28,12 @@
                 <tr th:each="item, stat : ${basket.getGoodsList()}">
                     <th scope="row" th:text="${stat.count}"></th>
                     <td>
-                        <div class="d-flex align-items-center">
+                        <div th:unless="${item.getGoods().getImages().isEmpty()}" class="d-flex align-items-center">
                             <img th:src="@{/product/image/{id}(id=${item.getGoods().getId()})}" th:alt="${item.getGoods().getProductName()}"
+                                 class="rounded float-start d-block mx-auto img-basket"/>
+                        </div>
+                        <div th:if="${item.getGoods().getImages().isEmpty()}" class="d-flex align-items-center">
+                            <img src="/images/df_img_2.png" alt="default image"
                                  class="rounded float-start d-block mx-auto img-basket"/>
                         </div>
                     </td>

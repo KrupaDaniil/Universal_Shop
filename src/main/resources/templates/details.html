@@ -19,25 +19,30 @@
                         <a th:href="@{/goods/{ctId}(ctId=${product.getCategories().getId()})}" class="btn btn-sm btn-outline-danger ms-3 px-4">Back</a>
                 </div>
                 <div class="image-section">
-                    <div id="carouselExample" class="carousel slide carousel-dark w-75">
-                        <div class="carousel-inner">
-                            <div th:each="item : ${product.getImages()}" class="px-4">
-                                <div th:if="${item.getIsMainImage()}" class="carousel-item active">
-                                    <img th:src="@{/product/images/{id}(id=${item.getId()})}" class="d-block w-100" th:alt="${item.getImageName()}">
-                                </div>
-                                <div th:unless="${item.getIsMainImage()}" class="carousel-item">
-                                    <img th:src="@{/product/images/{id}(id=${item.getId()})}" class="d-block w-100" th:alt="${item.getImageName()}">
+                    <div th:if="${product.getImages().isEmpty()}" class="d-flex align-items-center justify-content-center w-75">
+                        <img src="/images/df_img_1.png" class="d-block w-100" alt="default image">
+                    </div>
+                    <div th:unless="${product.getImages().isEmpty()}">
+                        <div id="carouselExample" class="carousel slide carousel-dark w-75">
+                            <div class="carousel-inner">
+                                <div th:each="item : ${product.getImages()}" class="px-4">
+                                    <div th:if="${item.getIsMainImage()}" class="carousel-item active">
+                                        <img th:src="@{/product/images/{id}(id=${item.getId()})}" class="d-block w-100" th:alt="${item.getImageName()}">
+                                    </div>
+                                    <div th:unless="${item.getIsMainImage()}" class="carousel-item">
+                                        <img th:src="@{/product/images/{id}(id=${item.getId()})}" class="d-block w-100" th:alt="${item.getImageName()}">
+                                    </div>
                                 </div>
                             </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
                     </div>
                 </div>
                 <div class="data-section">
@@ -64,7 +69,7 @@
                     <span class="fw-semibold fs-6 me-2" th:text="${product.getPrice()}"></span>
                     <button type="button" class="btn btn-sm btn-outline-secondary px-3" data-bs-toggle="modal"
                             data-bs-target="#formOrderModel">Order</button>
-                    <!--Update to form-->
+
                     <a th:href="@{/basket/{productId}(productId=${product.getId()})}" class="btn btn-sm btn-outline-success ms-3 px-4">Buy</a>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import com.example.universal_shop.Repo.IGoodsRepository;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,12 +23,9 @@ public class GoodsService {
         this.categoriesRepository = categoriesRepository;
     }
 
+    @Transactional
     public void saveGoods(GoodsDTO goodsDto, @Nullable Long id) {
-        Categories ct = categoriesRepository.findById(goodsDto.getCategoryId()).orElse(null);
         Goods goods;
-        if (ct == null) {
-            throw new IllegalArgumentException("Invalid category id");
-        }
 
         if (id == null) {
            goods = new Goods();
@@ -49,7 +47,7 @@ public class GoodsService {
             if (goodsDto.getDescription() != null) {
                 goods.setDescription(goodsDto.getDescription());
             }
-            goods.setCategories(ct);
+            goods.setCategories(categoriesRepository.findById(goodsDto.getCategoryId()).orElse(null));
 
             goodsRepository.save(goods);
 

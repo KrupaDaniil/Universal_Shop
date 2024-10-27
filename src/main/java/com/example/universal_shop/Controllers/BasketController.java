@@ -6,6 +6,7 @@ import com.example.universal_shop.Models.DTOs.ProductBasketDTO;
 import com.example.universal_shop.Models.Goods;
 import com.example.universal_shop.Models.User;
 import com.example.universal_shop.Services.GoodsService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,7 @@ public class BasketController {
     }
 
     @GetMapping("/basket/{productId}")
-    public String formOrder(@PathVariable long productId, HttpSession session, Model model) {
+    public String formOrder(@PathVariable long productId, HttpSession session, Model model, HttpServletRequest request) {
         Goods product = goodsService.findById(productId);
         BasketDTO basketDTO = (BasketDTO) session.getAttribute("formOrder");
 
@@ -75,7 +76,7 @@ public class BasketController {
         session.setAttribute("formOrder", basketDTO);
         model.addAttribute("basket", basketDTO);
 
-        return "redirect:/basket";
+        return "redirect:" + (request.getHeader("Referer") != null ? request.getHeader("Referer") : "/basket");
     }
 
     @GetMapping("basket/up/{productId}/{action}")

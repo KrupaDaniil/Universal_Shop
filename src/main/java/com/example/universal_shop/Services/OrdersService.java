@@ -81,9 +81,10 @@ public class OrdersService {
         List<UserOrdersView> userOrdersViews = new ArrayList<>();;
 
         for (Orders order : userOrders) {
-
-            userOrdersViews.add(new UserOrdersView(convertToGoodsMap(order.getProduct()), order.getQuantity(), order.getPrice(),
-                    order.isProcessed(), order.isCanceledUser(), order.getOrderIdentifier()));
+            if (order.getProduct() != null && !order.getProduct().isEmpty()) {
+                userOrdersViews.add(new UserOrdersView(convertToGoodsMap(order.getProduct()), order.getQuantity(), order.getPrice(),
+                        order.isProcessed(), order.isCanceledUser(), order.getOrderIdentifier()));
+            }
         }
 
         return userOrdersViews;

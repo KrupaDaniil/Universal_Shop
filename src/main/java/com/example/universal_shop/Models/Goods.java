@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 public class Goods implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String productName;
     private double price;
@@ -31,8 +31,8 @@ public class Goods implements Serializable {
     @OneToMany(mappedBy = "goods", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Images> images;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "categories_id", nullable = true)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "categories_id")
     private Categories categories;
 }

@@ -1,9 +1,7 @@
 package com.example.universal_shop.Controllers;
 
-import com.example.universal_shop.Models.Categories;
-import com.example.universal_shop.Models.Goods;
-import com.example.universal_shop.Models.Images;
-import com.example.universal_shop.Models.User;
+import com.example.universal_shop.Models.*;
+import com.example.universal_shop.Models.DTOs.GoodsFilteredDTO;
 import com.example.universal_shop.Services.CategoriesService;
 import com.example.universal_shop.Services.GoodsService;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +9,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.*;
 
@@ -49,8 +49,44 @@ public class ShopController {
     @GetMapping("/goods/{ctId}")
     public String showGoods(@PathVariable long ctId, @AuthenticationPrincipal User user, Model model) {
         List<Goods> goods = goodsService.findGoodsByCategoryId(ctId);
+        List<String> ct = goods.stream().map(Goods::getBrand).distinct().toList();
+        GoodsFilteredDTO dto = new GoodsFilteredDTO();
+        dto.setBrands(ct);
+        dto.setPriceMin(goods.stream().map(Goods::getPrice).min(Double::compareTo).orElse(0.0));
+        dto.setPriceMax(goods.stream().map(Goods::getPrice).reduce(0.0, Double::max));
         model.addAttribute("goods", goods);
         model.addAttribute("user", user);
+        model.addAttribute("goods_f", dto);
+        model.addAttribute("ctId", ctId);
+        return "goods";
+    }
+
+    @PostMapping("/goods/filtered")
+    public String showFilteredGoods(@ModelAttribute("goodsFiltered")GoodsFilteredDTO goodsFilteredDTO, @AuthenticationPrincipal User user, Model model) {
+        List<Goods> goods = goodsService.findGoodsByCategoryId(goodsFilteredDTO.getCategoryId());
+
+        if (goods != null) {
+            List<String> ct = goods.stream().map(Goods::getBrand).distinct().toList();
+            goodsFilteredDTO.setBrands(ct);
+
+            if (goodsFilteredDTO.getBrand() != null && !goodsFilteredDTO.getBrand().isBlank()) {
+                goods = goods.stream().filter(r -> r.getBrand().equals(goodsFilteredDTO.getBrand())).toList();
+            }
+
+            if (goodsFilteredDTO.getPriceMin() >= 0 && goodsFilteredDTO.getPriceMax() > 0) {
+                goods = goods.stream().filter(r -> r.getPrice() >= goodsFilteredDTO.getPriceMin() && r.getPrice() <= goodsFilteredDTO.getPriceMax()).toList();
+            }
+
+            if (goodsFilteredDTO.getProductName() != null && !goodsFilteredDTO.getProductName().isBlank()) {
+                goods = goods.stream().filter(r -> r.getProductName().contains(goodsFilteredDTO.getProductName())).toList();
+            }
+        }
+
+        model.addAttribute("goods", goods);
+        model.addAttribute("goods_f", goodsFilteredDTO);
+        model.addAttribute("ctId", goodsFilteredDTO.getCategoryId());
+        model.addAttribute("user", user);
+
         return "goods";
     }
 

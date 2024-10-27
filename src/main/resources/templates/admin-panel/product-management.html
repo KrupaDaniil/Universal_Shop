@@ -94,7 +94,7 @@
 
             <div class="tab-pane fade" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab" tabindex="0">
                 <div class="my-3 px-4">
-                    <form method="post" th:action="@{/admin-panel/add-product}">
+                    <form method="post" action="/admin-panel/add-product">
                         <div class="row row-cols-2">
                             <div class="col mb-3">
                                 <input th:type="text" th:name="productName" class="form-control form-control-sm"
@@ -264,7 +264,7 @@
                         <td th:text="${order.getUser().getEmail()}"></td>
                         <td>
                             <div th:each="product : ${order.getProducts()}"
-                                 th:text="${product.getKey().getProductName() + ' - ' + product.getValue()}"
+                                 th:text="${product.getKey()?.getProductName() + ' - ' + product?.getValue()}"
                                  class="d-flex align-items-center flex-wrap"></div>
                         </td>
                         <td class="text-center" th:text="${order.getQuantity()}"></td>

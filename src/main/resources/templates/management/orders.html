@@ -35,8 +35,12 @@
                     <div th:each="product : ${order.getProducts()}" class="d-flex align-items-center justify-content-center flex-wrap">
                         <div class="row w-100 align-items-center">
                             <div class="col">
-                                <div class="d-flex align-items-center">
+                                <div th:unless="${product.getKey().getImages().isEmpty()}" class="d-flex align-items-center">
                                     <img th:src="@{/product/image/{id}(id=${product.getKey().getId()})}" th:alt="${product.getKey().getProductName()}"
+                                         class="rounded float-start d-block mx-auto img-basket"/>
+                                </div>
+                                <div th:if="${product.getKey().getImages().isEmpty()}" class="d-flex align-items-center">
+                                    <img src="/images/df_img_2.png" alt="default image"
                                          class="rounded float-start d-block mx-auto img-basket"/>
                                 </div>
                             </div>

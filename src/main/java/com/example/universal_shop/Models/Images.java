@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Entity
 public class Images implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Lob
     private byte[] image;
