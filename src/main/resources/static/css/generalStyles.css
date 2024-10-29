@@ -81,12 +81,13 @@
     resize: none !important;
 }
 
-#userPhone:user-invalid {
-    border-color: red !important;
+:is(#userName, #userSurname, #userPhone, #userEmail, #userPassword):focus-within {
+    border: 1px solid rgba(47, 189, 132, 0.9);
+    box-shadow: 1px 1px 8px rgba(56, 138, 110, 0.76);
 }
-
-#userPhone:valid {
-    border-color: green !important;
+.invalidData {
+    border: 1px solid darkred !important;
+    box-shadow: 1px 1px 8px rgba(162, 69, 69, 0.76) !important;
 }
 
 .text-gr {
