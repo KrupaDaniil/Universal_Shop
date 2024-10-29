@@ -49,8 +49,8 @@ public class SecurityConfig {
                     rq.requestMatchers(HttpMethod.GET).permitAll();
                     rq.requestMatchers(HttpMethod.POST).permitAll();
                     rq.requestMatchers("/","/register", "/login", "/css/**", "/js/**", "/images/**",
-                                "/errors/fail-registration", "/general-pages/**", "/basket", "/categories",
-                            "/categories/image/**", "/goods").permitAll();
+                                "/errors/fail-registration", "/general-pages/**", "/basket/**", "/basket", "/categories",
+                            "/categories/image/**", "/goods", "goods/**", "/product/**").permitAll();
                     rq.requestMatchers("/admin-panel/**").hasAnyRole("ADMIN");
                     rq.requestMatchers( "/management/orders","/management/orders/**").hasAnyRole("USER", "ADMIN");
                     rq.anyRequest().authenticated();

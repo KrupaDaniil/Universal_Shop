@@ -403,7 +403,6 @@ public class AdminController {
 
     @GetMapping("/admin-panel/delete-order/{id}")
     public String deleteOrder(@PathVariable(value = "id") String id) {
-        long res = 0;
 
         if (ordersService.existsOrderById(id)) {
             try {

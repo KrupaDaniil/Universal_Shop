@@ -8,7 +8,7 @@
             <form method="post" th:action="@{place/order}">
                 <div class="modal-body">
                     <input type="text" class="form-control form-control-sm my-3" placeholder="Enter your email"
-                           aria-label="Enter your email" th:name="userEmail" th:value="${user.getEmail()} ? ${user.getEmail()} : ''">
+                           aria-label="Enter your email" th:name="userEmail" th:value="${user?.getEmail()} ? ${user?.getEmail()} : ''">
                 </div>
                 <div class="modal-footer">
                     <div class="d-flex align-items-center justify-content-end">

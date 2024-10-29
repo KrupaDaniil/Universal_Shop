@@ -67,8 +67,6 @@
                 <div class="button-section align-items-center justify-content-end px-3">
                     <span class="fw-semibold fs-6 me-2">Price</span>
                     <span class="fw-semibold fs-6 me-2" th:text="${product.getPrice()}"></span>
-                    <button type="button" class="btn btn-sm btn-outline-secondary px-3" data-bs-toggle="modal"
-                            data-bs-target="#formOrderModel">Order</button>
 
                     <a th:href="@{/basket/{productId}(productId=${product.getId()})}" class="btn btn-sm btn-outline-success ms-3 px-4">Buy</a>
                 </div>

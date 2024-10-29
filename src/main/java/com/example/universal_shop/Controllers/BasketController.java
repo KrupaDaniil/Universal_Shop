@@ -31,7 +31,9 @@ public class BasketController {
         if (basketDTO != null) {
             model.addAttribute("basket", basketDTO);
         }
-        model.addAttribute("user", user);
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
         return "basket";
     }
 
